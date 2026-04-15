@@ -14,7 +14,9 @@ module com.project.coursework2 {
 
     opens com.project.coursework2 to javafx.fxml;
     opens com.project.coursework2.model to javafx.fxml;
+    opens com.project.coursework2.gui to javafx.fxml;
     exports com.project.coursework2;
     exports com.project.coursework2.model;
     exports com.project.coursework2.data;
+    exports com.project.coursework2.gui;
 }
