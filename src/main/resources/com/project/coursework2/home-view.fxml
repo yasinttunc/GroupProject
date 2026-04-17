@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.project.coursework2.HomeController"
+            fitToWidth="true"
+            style="-fx-background-color: #FDF6EC;">
+
+    <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
+
+        <Label text="HOME DASHBOARD"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D; -fx-font-family: Arial;"/>
+
+        <HBox spacing="20">
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="160">
+                <Label text="TODAY REQUESTS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <Label fx:id="todayRequestsCount" text="5" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
+                <Label text="Requests" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="160">
+                <Label text="PENDING BOOKINGS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <Label fx:id="pendingCount" text="12" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #E8735A;"/>
+                <Label text="Bookings" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="160">
+                <Label text="TOTAL BOOKINGS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <Label fx:id="totalCount" text="48" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Bookings" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            </VBox>
+        </HBox>
+
+        <Label text="CREATE BOOKING REQUEST"
+               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+
+        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+            <HBox spacing="20">
+                <VBox spacing="5">
+                    <Label text="START NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                    <TextField fx:id="startNameField" promptText="Study Room" prefWidth="220"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="BOOKING" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                    <TextField fx:id="bookingField" promptText="Laptop 1 (Dell XPS)" prefWidth="220"/>
+                </VBox>
+            </HBox>
+            <HBox spacing="20">
+                <VBox spacing="5">
+                    <Label text="SELECT RESOURCE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                    <ComboBox fx:id="resourceDropdown" promptText="Select Resource" prefWidth="220"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="START DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                    <DatePicker fx:id="startDatePicker" prefWidth="200"/>
+                </VBox>
+                <VBox spacing="5">
+                    <Label text="END DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                    <DatePicker fx:id="endDatePicker" prefWidth="200"/>
+                </VBox>
+            </HBox>
+            <Button text="Submit" onAction="#handleSubmit"
+                    style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-padding: 10 30; -fx-background-radius: 8px; -fx-cursor: hand;"/>
+        </VBox>
+
+        <Button text="Create Booking Request" onAction="#handleCreateBooking"
+                style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-padding: 12 30; -fx-background-radius: 8px; -fx-cursor: hand; -fx-min-width: 220px;"/>
+
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.project.coursework2.AccountController"
+            fitToWidth="true"
+            style="-fx-background-color: #FDF6EC;">
+
+    <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
+
+        <Label text="ACCOUNT"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+
+        <HBox spacing="20">
+
+            <!-- Profile -->
+            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="300">
+                <Label text="PROFILE" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <HBox spacing="10">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="First Name" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        <TextField fx:id="firstNameField" promptText="Jasmine"/>
+                    </VBox>
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="Last Name" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        <TextField fx:id="lastNameField" promptText="Eagles"/>
+                    </VBox>
+                </HBox>
+                <Label text="Email Address" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextField fx:id="emailField" promptText="JAHMOS"/>
+                <HBox spacing="10">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="Fiscal ID" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        <TextField fx:id="fiscalIdField" promptText="2244555"/>
+                    </VBox>
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <Label text="ID" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        <TextField fx:id="idField" promptText="2244555"/>
+                    </VBox>
+                </HBox>
+                <Label text="Password" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <PasswordField fx:id="passwordField" promptText="Jasmine Egon"/>
+                <HBox spacing="10">
+                    <Button text="Delete Account" onAction="#handleDeleteAccount"
+                            style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                    <Button text="Edit" onAction="#handleEdit"
+                            style="-fx-background-color: #7A7A7A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                    <Button text="Save" onAction="#handleSave"
+                            style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+
+            <!-- Profile Admin -->
+            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="300">
+                <Label text="PROFILE ADMIN" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="FIRST NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextField fx:id="adminFirstNameField" promptText="Study Room 101"/>
+                <Label text="EMAIL NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextField fx:id="adminEmailField" promptText=""/>
+                <Label text="LAB IDS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextField fx:id="labIdsField" promptText="LAB 105"/>
+                <Label text="DESCRIPTION" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextArea fx:id="adminDescField" promptText="What do you realise you went too here" prefHeight="80"/>
+                <HBox spacing="10">
+                    <Button text="Cancel" onAction="#handleAdminCancel"
+                            style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                    <Button text="Save" onAction="#handleAdminSave"
+                            style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+</ScrollPane>

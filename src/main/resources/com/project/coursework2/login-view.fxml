@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.project.coursework2.LoginController"
+      alignment="CENTER"
+      spacing="20"
+      style="-fx-background-color: #FDF6EC; -fx-padding: 60;">
+
+    <Label text="CRBAS"
+           style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
+
+    <Label text="Campus Resource Booking System"
+           style="-fx-font-size: 14px; -fx-text-fill: #7A7A7A;"/>
+
+    <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10;" maxWidth="350">
+
+        <Label text="LOGIN" style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #3D3D3D;"/>
+
+        <VBox spacing="5">
+            <Label text="Email / Student ID" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            <TextField fx:id="usernameField" promptText="Enter your email or ID" prefWidth="290"/>
+        </VBox>
+
+        <VBox spacing="5">
+            <Label text="Password" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            <PasswordField fx:id="passwordField" promptText="Enter your password" prefWidth="290"/>
+        </VBox>
+
+        <Label fx:id="errorLabel" text=""
+               style="-fx-text-fill: #E8735A; -fx-font-size: 11px;"/>
+
+        <Button text="Login" onAction="#handleLogin"
+                prefWidth="290"
+                style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-font-size: 14px;
+                       -fx-padding: 10; -fx-background-radius: 8px; -fx-cursor: hand;"/>
+
+    </VBox>
+
+</VBox>

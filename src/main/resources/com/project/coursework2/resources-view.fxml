@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.project.coursework2.ResourcesController"
+            fitToWidth="true"
+            style="-fx-background-color: #FDF6EC;">
+
+    <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
+
+        <Label text="RESOURCES"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+
+        <Label text="ROOMS"
+               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+
+        <HBox spacing="15" fx:id="roomsContainer">
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Study Room 101" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Seating: 6" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Meeting Room AR1" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Seating: 12" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Lab 105 (Bio)" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Seating: 20" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Study Pod 5" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Seating: 2" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Lecture Hall B" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Seating: 80" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Cross Study Area 1" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Seating: 6" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+        </HBox>
+
+        <Label text="EQUIPMENT"
+               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+
+        <HBox spacing="15" fx:id="equipmentContainer">
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Laptop 1 (Dell XPS)" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="1460 SIPS" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Camera Kit 2" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Sony A7" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Projector A" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Array AH1" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="VR Headset 2" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="1650 lohuel" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Sound Kit 1" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="1000 MBPS Apexo" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="Sound Kit K" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="1760 M5H" style="-fx-text-fill: #7A7A7A; -fx-font-size: 11px;"/>
+                <Button text="Book" style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>
