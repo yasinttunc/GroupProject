@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.project.coursework2.AdminController"
+            fitToWidth="true"
+            style="-fx-background-color: #FDF6EC;">
+
+    <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
+
+        <Label text="ADMIN PANEL"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+
+        <HBox spacing="20">
+
+            <!-- Manage Users -->
+            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="280">
+                <Label text="MANAGE USERS" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <TextField fx:id="userSearchField" promptText="Search users..."/>
+                <TableView fx:id="usersTable" prefHeight="200">
+                    <columns>
+                        <TableColumn fx:id="userNameCol" text="Name" prefWidth="120"/>
+                        <TableColumn fx:id="userActionCol" text="Action" prefWidth="130"/>
+                    </columns>
+                </TableView>
+                <Label text="ROOM" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <ComboBox fx:id="roomDropdown" promptText="Study Room 101" prefWidth="240"/>
+                <Label text="SELECT RESOURCE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <ComboBox fx:id="resourceDropdown" promptText="Generic Kit 2" prefWidth="240"/>
+                <Label text="END DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <DatePicker fx:id="endDatePicker" prefWidth="240"/>
+                <HBox spacing="10">
+                    <Button text="Cancel" onAction="#handleCancel"
+                            style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                    <Button text="Save" onAction="#handleSaveUser"
+                            style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+
+            <!-- Schedule Maintenance -->
+            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="280">
+                <Label text="SCHEDULE MAINTENANCE" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="RISK NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextField fx:id="riskNameField" promptText="Study Room 101"/>
+                <HBox spacing="10">
+                    <VBox spacing="5">
+                        <Label text="START DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        <DatePicker fx:id="mainStartDate" prefWidth="120"/>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="SNSE DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        <DatePicker fx:id="mainEndDate" prefWidth="120"/>
+                    </VBox>
+                </HBox>
+                <Label text="DESCRIPTION" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextArea fx:id="descriptionField" promptText="What maintenance you want here" prefHeight="80"/>
+                <Button text="Activate" onAction="#handleActivate"
+                        style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- Resource Management -->
+            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="280">
+                <Label text="RESOURCE MANAGEMENT" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="ADD NEW RESOURCE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A; -fx-font-weight: bold;"/>
+                <HBox spacing="10" alignment="CENTER">
+                    <VBox spacing="5" style="-fx-background-color: #FDF6EC; -fx-padding: 10; -fx-background-radius: 8;" prefWidth="70" alignment="CENTER">
+                        <Label text="A" style="-fx-font-weight: bold;"/>
+                        <Label text="Study Room" style="-fx-font-size: 9px; -fx-text-fill: #7A7A7A;"/>
+                    </VBox>
+                    <VBox spacing="5" style="-fx-background-color: #FDF6EC; -fx-padding: 10; -fx-background-radius: 8;" prefWidth="70" alignment="CENTER">
+                        <Label text="B" style="-fx-font-weight: bold;"/>
+                        <Label text="Meeting Room" style="-fx-font-size: 9px; -fx-text-fill: #7A7A7A;"/>
+                    </VBox>
+                    <VBox spacing="5" style="-fx-background-color: #FDF6EC; -fx-padding: 10; -fx-background-radius: 8;" prefWidth="70" alignment="CENTER">
+                        <Label text="C" style="-fx-font-weight: bold;"/>
+                        <Label text="Camera Kit 2" style="-fx-font-size: 9px; -fx-text-fill: #7A7A7A;"/>
+                    </VBox>
+                </HBox>
+                <Label text="SUMMARY" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A; -fx-font-weight: bold;"/>
+                <HBox spacing="10">
+                    <VBox spacing="3" style="-fx-background-color: #4AADA8; -fx-padding: 8; -fx-background-radius: 5;" prefWidth="70" alignment="CENTER">
+                        <Label text="Available" style="-fx-text-fill: white; -fx-font-size: 10px;"/>
+                    </VBox>
+                    <VBox spacing="3" style="-fx-background-color: #4AADA8; -fx-padding: 8; -fx-background-radius: 5;" prefWidth="70" alignment="CENTER">
+                        <Label text="Available" style="-fx-text-fill: white; -fx-font-size: 10px;"/>
+                    </VBox>
+                    <VBox spacing="3" style="-fx-background-color: #E8735A; -fx-padding: 8; -fx-background-radius: 5;" prefWidth="70" alignment="CENTER">
+                        <Label text="Maintenance" style="-fx-text-fill: white; -fx-font-size: 10px;"/>
+                    </VBox>
+                </HBox>
+                <HBox spacing="10">
+                    <Button text="Save" onAction="#handleSaveResource"
+                            style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+</ScrollPane>

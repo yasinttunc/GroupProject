@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.project.coursework2.BookingsController"
+      spacing="20"
+      style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label text="MY BOOKINGS"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+        <TextField fx:id="searchField" promptText="Search..."
+                   style="-fx-min-width: 200px;"
+                   HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS"
+               style="-fx-background-color: white; -fx-background-radius: 10;">
+        <columns>
+            <TableColumn fx:id="dateCol" text="Date" prefWidth="80"/>
+            <TableColumn fx:id="timeCol" text="Time" prefWidth="120"/>
+            <TableColumn fx:id="bookingCol" text="Bookings" prefWidth="150"/>
+            <TableColumn fx:id="seatingCol" text="Seating" prefWidth="80"/>
+            <TableColumn fx:id="userCol" text="User Name" prefWidth="120"/>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="100"/>
+            <TableColumn fx:id="statusCol" text="Status" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+</VBox>
