@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.project.coursework2.BookingsController"
+      fx:controller="com.project.coursework2.controller.BookingsController"
       spacing="20"
       style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
 
@@ -20,12 +20,13 @@
     <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS"
                style="-fx-background-color: white; -fx-background-radius: 10;">
         <columns>
-            <TableColumn fx:id="dateCol" text="Date" prefWidth="80"/>
-            <TableColumn fx:id="timeCol" text="Time" prefWidth="120"/>
-            <TableColumn fx:id="bookingCol" text="Bookings" prefWidth="150"/>
-            <TableColumn fx:id="seatingCol" text="Seating" prefWidth="80"/>
-            <TableColumn fx:id="userCol" text="User Name" prefWidth="120"/>
-            <TableColumn fx:id="idCol" text="ID" prefWidth="100"/>
+            <TableColumn fx:id="bookingIDCol" text="Booking ID" prefWidth="120"/>
+            <TableColumn fx:id="userIDCol" text="User ID" prefWidth="100"/>
+            <TableColumn fx:id="resourceIDCol" text="Resource ID" prefWidth="100"/>
+            <TableColumn fx:id="resourceNameCol" text="Resource Name" prefWidth="150"/>
+            <TableColumn fx:id="startTimeCol" text="Start Time" prefWidth="90"/>
+            <TableColumn fx:id="endTimeCol" text="End Time" prefWidth="90"/>
+            <TableColumn fx:id="dateCol" text="Date" prefWidth="90"/>
             <TableColumn fx:id="statusCol" text="Status" prefWidth="100"/>
         </columns>
     </TableView>

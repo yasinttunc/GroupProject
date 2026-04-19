@@ -1,15 +1,22 @@
-package com.project.coursework2;
+package com.project.coursework2.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
 public class SidebarController {
-
+    @FXML private Button adminBtn;
     public static StackPane mainContentArea;
 
+    @FXML
+    public void initialize() {
+        String role = SessionManager.getUserRole();
+        adminBtn.setVisible("Admin".equals(role));
+        adminBtn.setManaged("Admin".equals(role));
+    }
     private void loadPage(String fxmlFile) {
         try {
             if (mainContentArea != null) {

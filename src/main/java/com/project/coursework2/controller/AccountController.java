@@ -1,5 +1,6 @@
-package com.project.coursework2;
+package com.project.coursework2.controller;
 
+import com.project.coursework2.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -18,12 +19,27 @@ public class AccountController {
 
     @FXML
     public void initialize() {
-        System.out.println("Account page loaded");
+        setFieldsEditable(false);
+
+        User currentUser = SessionManager.getCurrentUser();
+        if (currentUser == null) return;
+
+        firstNameField.setText(currentUser.getFirstName());
+        lastNameField.setText(currentUser.getLastName());
+        emailField.setText(currentUser.getEmail());
+    }
+
+    private void setFieldsEditable(boolean editable) {
+        firstNameField.setEditable(editable);
+        lastNameField.setEditable(editable);
+        emailField.setEditable(editable);
+        fiscalIdField.setEditable(editable);
+        passwordField.setEditable(editable);
     }
 
     @FXML private void handleDeleteAccount() { System.out.println("Delete account clicked"); }
-    @FXML private void handleEdit() { System.out.println("Edit clicked"); }
-    @FXML private void handleSave() { System.out.println("Save clicked"); }
+    @FXML private void handleEdit() { setFieldsEditable(true); }
+    @FXML private void handleSave() { setFieldsEditable(false); }
     @FXML private void handleAdminCancel() { System.out.println("Admin cancel clicked"); }
     @FXML private void handleAdminSave() { System.out.println("Admin save clicked"); }
 }

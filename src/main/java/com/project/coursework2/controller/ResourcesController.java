@@ -1,4 +1,4 @@
-package com.project.coursework2;
+package com.project.coursework2.controller;
 
 import javafx.fxml.FXML;
 

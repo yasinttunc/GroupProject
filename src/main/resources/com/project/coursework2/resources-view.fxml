@@ -5,7 +5,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.project.coursework2.ResourcesController"
+            fx:controller="com.project.coursework2.controller.ResourcesController"
             fitToWidth="true"
             style="-fx-background-color: #FDF6EC;">
 
