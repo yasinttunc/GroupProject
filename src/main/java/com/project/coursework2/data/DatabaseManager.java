@@ -15,7 +15,7 @@ public class DatabaseManager {
     }
 
     public static User getUser(String email, String password) throws SQLException {
-        String query = "SELECT userID, name, firstName, lastName, email, role, maxActiveBookings FROM User WHERE email = ? AND password = ?";
+        String query = "SELECT userID, name, email, role, maxActiveBookings FROM User WHERE email = ? AND password = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -28,8 +28,7 @@ public class DatabaseManager {
                     User user = new User(
                             rs.getString("userID"),
                             rs.getString("name"),
-                            rs.getString("firstName"),
-                            rs.getString("lastName"),
+                            "",
                             rs.getString("email"),
                             rs.getString("role")
                     );
@@ -44,7 +43,7 @@ public class DatabaseManager {
     public static ArrayList<User> getAllUsers() throws SQLException {
         ArrayList<User> users = new ArrayList<>();
 
-        String query = "SELECT userID, name, firstName, lastName, email, role, maxActiveBookings FROM User";
+        String query = "SELECT userID, name, email, role, maxActiveBookings FROM User";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -54,8 +53,7 @@ public class DatabaseManager {
                 User user = new User(
                         rs.getString("userID"),
                         rs.getString("name"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
+                        "",
                         rs.getString("email"),
                         rs.getString("role")
                 );

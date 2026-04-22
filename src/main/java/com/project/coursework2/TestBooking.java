@@ -5,9 +5,10 @@ import com.project.coursework2.data.BookingDAO;
 public class TestBooking {
     public static void main(String[] args) {
         Booking booking = new Booking(
-                "B002",
-                "USR001",
-                "PUT_REAL_RESOURCE_ID_HERE",
+                "B001",
+                "USR011",
+                "R001",
+                "Study Room A",
                 "09:00",
                 "11:00",
                 "2026-04-22",
