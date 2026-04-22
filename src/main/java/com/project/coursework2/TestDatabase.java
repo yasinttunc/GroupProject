@@ -12,7 +12,7 @@ public class TestDatabase {
         List<Resource> list = dao.getAllResources();
 
         for (Resource r : list) {
-            System.out.println(r.getName());
+            System.out.println(r.getResourceName());
         }
     }
 }

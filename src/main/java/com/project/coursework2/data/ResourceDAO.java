@@ -1,15 +1,20 @@
 package com.project.coursework2.data;
 
+import com.project.coursework2.model.Equipment;
+import com.project.coursework2.model.Lab;
 import com.project.coursework2.model.Resource;
+import com.project.coursework2.model.StudyRoom;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceDAO {
 
     public List<Resource> getAllResources() {
-
         List<Resource> resources = new ArrayList<>();
         String sql = "SELECT * FROM Resource";
 
@@ -18,19 +23,25 @@ public class ResourceDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
+                String resourceId = rs.getString("resourceID");
+                String name = rs.getString("name");
+                String type = rs.getString("type");
 
-                Resource r = new Resource();
+                Resource resource = null;
 
-                r.setResourceID(rs.getString("resourceID"));
-                r.setName(rs.getString("name"));
-                r.setLocation(rs.getString("location"));
-                r.setType(rs.getString("type"));
-                r.setRequiredRole(rs.getString("requiredRole"));
-                r.setMaxBookingDuration(rs.getInt("maxBookingDuration"));
-                r.setActive(rs.getInt("isActive") == 1);
-                r.setCreatedAt(rs.getString("createdAt"));
+                if ("StudyRoom".equalsIgnoreCase(type)) {
+                    resource = new StudyRoom(resourceId, name, 0);
+                } else if ("Lab".equalsIgnoreCase(type)) {
+                    resource = new Lab(resourceId, name, "General", 1);
+                } else if ("Equipment".equalsIgnoreCase(type)) {
+                    resource = new Equipment(resourceId, name, "General", 1);
+                }
 
-                resources.add(r);
+                if (resource != null) {
+                    int isActive = rs.getInt("isActive");
+                    resource.setAvailable(isActive == 1);
+                    resources.add(resource);
+                }
             }
 
         } catch (SQLException e) {
