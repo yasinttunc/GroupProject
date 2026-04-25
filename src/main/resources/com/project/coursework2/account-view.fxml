@@ -30,7 +30,7 @@
                     </VBox>
                 </HBox>
                 <Label text="Email Address" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <TextField fx:id="emailField" promptText="JAHMOS"/>
+                <TextField fx:id="emailField" promptText="email@swansea.ac.uk"/>
                 <HBox spacing="10">
                     <VBox spacing="5" HBox.hgrow="ALWAYS">
                         <Label text="Fiscal ID" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
@@ -42,7 +42,7 @@
                     </VBox>
                 </HBox>
                 <Label text="Password" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <PasswordField fx:id="passwordField" promptText="Jasmine Egon"/>
+                <PasswordField fx:id="passwordField" promptText="••••••••"/>
                 <HBox spacing="10">
                     <Button text="Delete Account" onAction="#handleDeleteAccount"
                             style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
@@ -53,21 +53,23 @@
                 </HBox>
             </VBox>
 
-            <!-- Profile Admin -->
+            <!-- Admin Help Request -->
             <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="300">
-                <Label text="PROFILE ADMIN" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-                <Label text="FIRST NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <TextField fx:id="adminFirstNameField" promptText="Study Room 101"/>
-                <Label text="EMAIL NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <TextField fx:id="adminEmailField" promptText=""/>
-                <Label text="LAB IDS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <TextField fx:id="labIdsField" promptText="LAB 105"/>
-                <Label text="DESCRIPTION" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <TextArea fx:id="adminDescField" promptText="What do you realise you went too here" prefHeight="80"/>
+                <Label text="ADMIN HELP REQUEST" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <Label text="Need assistance? Send a message to the admin team."
+                       style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;" wrapText="true"/>
+                <Label text="SUBJECT" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <ComboBox fx:id="helpSubjectDropdown" promptText="Select a topic" prefWidth="260">
+                </ComboBox>
+                <Label text="YOUR MESSAGE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <TextArea fx:id="helpMessageField" promptText="Describe your issue or question here..."
+                          prefHeight="120" wrapText="true"/>
+                <Label fx:id="helpConfirmLabel" text=""
+                       style="-fx-text-fill: #4AADA8; -fx-font-size: 11px;"/>
                 <HBox spacing="10">
-                    <Button text="Cancel" onAction="#handleAdminCancel"
-                            style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
-                    <Button text="Save" onAction="#handleAdminSave"
+                    <Button text="Clear" onAction="#handleHelpClear"
+                            style="-fx-background-color: #7A7A7A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                    <Button text="Submit Request" onAction="#handleHelpSubmit"
                             style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
                 </HBox>
             </VBox>
