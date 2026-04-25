@@ -1,4 +1,4 @@
-package com.project.coursework2.model;
+/*package com.project.coursework2.model;
 
 import com.project.coursework2.data.BookingDAO;
 
@@ -23,4 +23,4 @@ public class TestBooking {
 
         System.out.println(result ? "Booking submitted" : "Booking denied");
     }
-}
+}*/

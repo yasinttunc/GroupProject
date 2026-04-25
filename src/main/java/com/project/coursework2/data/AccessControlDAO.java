@@ -1,4 +1,4 @@
-package com.project.coursework2.data;
+/* package com.project.coursework2.data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -108,3 +108,5 @@ public class AccessControlDAO {
         }
     }
 }
+c
+ */

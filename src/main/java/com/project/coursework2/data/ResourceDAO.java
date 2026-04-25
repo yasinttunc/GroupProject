@@ -1,4 +1,4 @@
-package com.project.coursework2.data;
+/*package com.project.coursework2.data;
 
 import com.project.coursework2.model.Equipment;
 import com.project.coursework2.model.Lab;
@@ -50,4 +50,4 @@ public class ResourceDAO {
 
         return resources;
     }
-}
+}*/

@@ -1,4 +1,4 @@
-package com.project.coursework2.model;
+/*package com.project.coursework2.model;
 
 import com.project.coursework2.data.AccessControlDAO;
 
@@ -10,4 +10,4 @@ public class TestAccessControl {
 
         System.out.println(result ? "Access granted" : "Access denied");
     }
-}
+}*/

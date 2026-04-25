@@ -17,7 +17,6 @@ public class User {
     private List<Booking> bookings;
     private static int totalUsers;
 
-    // for login DAO
     public User(String id, String firstName, String lastName , String email, String role){
         this.userID = id;
         this.firstName = firstName;
@@ -25,7 +24,7 @@ public class User {
         this.email = email;
         this.role = role;
         this.password = "";
-        this.maxActiveBookings = 3;
+        maxActiveBookings = 3;
         this.certifications = new ArrayList<>();
         this.bookings = new ArrayList<>();
         totalUsers++;

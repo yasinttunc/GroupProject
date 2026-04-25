@@ -1,4 +1,4 @@
-package com.project.coursework2;
+/* package com.project.coursework2;
 
 import com.project.coursework2.data.ResourceDAO;
 import com.project.coursework2.model.Resource;
@@ -15,4 +15,4 @@ public class TestDatabase {
             System.out.println(r.getResourceName());
         }
     }
-}
+}*/

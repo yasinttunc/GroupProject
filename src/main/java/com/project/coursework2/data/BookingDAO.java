@@ -1,3 +1,4 @@
+/*
 package com.project.coursework2.data;
 
 import com.project.coursework2.model.Booking;
@@ -88,4 +89,4 @@ public class BookingDAO {
             return false;
         }
     }
-}
+}*/

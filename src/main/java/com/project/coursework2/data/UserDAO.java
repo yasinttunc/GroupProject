@@ -1,3 +1,4 @@
+/*
 package com.project.coursework2.data;
 
 import com.project.coursework2.model.User;
@@ -35,4 +36,4 @@ public class UserDAO {
 
         return null;
     }
-}
+}*/
