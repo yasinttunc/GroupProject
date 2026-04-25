@@ -32,40 +32,28 @@
             </VBox>
         </HBox>
 
-        <Label text="CREATE BOOKING REQUEST"
-               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
 
-        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
-            <HBox spacing="20">
-                <VBox spacing="5">
-                    <Label text="START NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                    <TextField fx:id="startNameField" promptText="Study Room" prefWidth="220"/>
+        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+            <Label text="New Booking Request" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+            <HBox spacing="25" alignment="CENTER_LEFT">
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <Label text="Resource" style="-fx-font-size: 13px; -fx-text-fill: #555555; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="resourceDropdown" promptText="Select Resource" maxWidth="Infinity" style="-fx-min-height: 40px; -fx-background-radius: 6; -fx-border-color: #E0E0E0; -fx-border-radius: 6; -fx-background-color: #FAFAFA;"/>
                 </VBox>
-                <VBox spacing="5">
-                    <Label text="BOOKING" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                    <TextField fx:id="bookingField" promptText="Laptop 1 (Dell XPS)" prefWidth="220"/>
+                <VBox spacing="8" HBox.hgrow="SOMETIMES">
+                    <Label text="Date" style="-fx-font-size: 13px; -fx-text-fill: #555555; -fx-font-weight: bold;"/>
+                    <DatePicker fx:id="startDatePicker" prefWidth="180" style="-fx-min-height: 40px;"/>
                 </VBox>
-            </HBox>
-            <HBox spacing="20">
-                <VBox spacing="5">
-                    <Label text="SELECT RESOURCE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                    <ComboBox fx:id="resourceDropdown" promptText="Select Resource" prefWidth="220"/>
-                </VBox>
-                <VBox spacing="5">
-                    <Label text="START DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                    <DatePicker fx:id="startDatePicker" prefWidth="200"/>
-                </VBox>
-                <VBox spacing="5">
-                    <Label text="END DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                    <DatePicker fx:id="endDatePicker" prefWidth="200"/>
+                <VBox spacing="8" HBox.hgrow="SOMETIMES">
+                    <Label text="Time" style="-fx-font-size: 13px; -fx-text-fill: #555555; -fx-font-weight: bold;"/>
+                    <TextField fx:id="timeField" promptText="HH:MM" prefWidth="100" style="-fx-min-height: 40px; -fx-background-radius: 6; -fx-border-color: #E0E0E0; -fx-border-radius: 6; -fx-prompt-text-fill: #AAAAAA;"/>
                 </VBox>
             </HBox>
-            <Button text="Submit" onAction="#handleSubmit"
-                    style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-padding: 10 30; -fx-background-radius: 8px; -fx-cursor: hand;"/>
+            <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 10 0 0 0;">
+                <Button text="Submit Request" onAction="#handleSubmit"
+                        style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(74,173,168,0.3), 8, 0, 0, 4);"/>
+            </HBox>
         </VBox>
-
-        <Button text="Create Booking Request" onAction="#handleCreateBooking"
-                style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-padding: 12 30; -fx-background-radius: 8px; -fx-cursor: hand; -fx-min-width: 220px;"/>
 
     </VBox>
 </ScrollPane>

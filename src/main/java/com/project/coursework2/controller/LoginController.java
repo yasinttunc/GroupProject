@@ -1,13 +1,16 @@
 package com.project.coursework2.controller;
 
-import com.project.coursework2.data.DatabaseManager;
+import java.sql.SQLException;
+
+import com.project.coursework2.data.UserDatabaseManager;
 import com.project.coursework2.model.User;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-
-import java.sql.SQLException;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 public class LoginController {
 
@@ -30,7 +33,7 @@ public class LoginController {
             return;
         }
         try {
-            User user = DatabaseManager.getUser(email,password);
+            User user = UserDatabaseManager.getUser(email,password);
             if (user != null) {
                 SessionManager.setCurrentUser(user);
                 SessionManager.setUserRole(user.getRole());

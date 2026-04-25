@@ -2,6 +2,7 @@ package com.project.coursework2.model;
 
 public class Student extends User {
     private int yearOfStudy;
+    private String courseName;
 
     public Student(String id, String firstName, String lastName, String email, int yearOfStudy) {
         super(id, firstName, lastName, email, "Student");

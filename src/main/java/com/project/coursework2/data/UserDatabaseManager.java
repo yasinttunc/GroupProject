@@ -1,12 +1,16 @@
 package com.project.coursework2.data;
 
-import com.project.coursework2.model.Booking;
-import com.project.coursework2.model.User;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DatabaseManager {
+import com.project.coursework2.model.User;
+
+public class UserDatabaseManager {
 
     private static final String DB_URL = "jdbc:sqlite:university_booking (2).db";
 
@@ -65,64 +69,36 @@ public class DatabaseManager {
         return users;
     }
 
-    public static boolean validateUser(String email, String password) throws SQLException {
-        String query = "SELECT 1 FROM User WHERE email = ? AND password = ?";
+
+
+    public static void updateUser(String userID, String firstName,
+                                  String lastName, String email, String password) throws SQLException {
+
+        String query = "UPDATE User SET name = ?, firstName = ?, lastName = ?, email = ?, password = ? WHERE userID = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, email);
-            stmt.setString(2, password);
+            stmt.setString(1, (firstName + " "+lastName));
+            stmt.setString(2, firstName);
+            stmt.setString(3, lastName);
+            stmt.setString(4, email);
+            stmt.setString(5, password);
+            stmt.setString(6, userID);
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();
-            }
+            stmt.executeUpdate();
+            conn.close();
         }
+
     }
-
-    public static String getUserRole(String email, String password) throws SQLException {
-        String query = "SELECT role FROM User WHERE email = ? AND password = ?";
-
+    public static void deleteUser(String userID) throws SQLException {
+        String query = "DELETE FROM User WHERE userID = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("role");
-                }
-            }
+            stmt.setString(1, userID);
+            stmt.executeUpdate();
+            conn.close();
         }
-
-        return null;
     }
 
-    public static ArrayList<Booking> getAllBookings() throws SQLException {
-        ArrayList<Booking> bookings = new ArrayList<>();
-        String query = "SELECT b.bookingID, b.userID, b.resourceID, r.name AS resourceName, " +
-                       "b.startTime, b.endTime, b.date, b.status, b.quantityBooked, b.createdAt " +
-                       "FROM Booking b JOIN Resource r ON b.resourceID = r.resourceID";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                Booking booking = new Booking(
-                        rs.getString("bookingID"),
-                        rs.getString("userID"),
-                        rs.getString("resourceID"),
-                        rs.getString("resourceName"),
-                        rs.getString("startTime"),
-                        rs.getString("endTime"),
-                        rs.getString("date"),
-                        rs.getString("status"),
-                        rs.getInt("quantityBooked"),
-                        rs.getString("createdAt")
-                );
-                bookings.add(booking);
-            }
-        }
-        return bookings;
-    }
 }

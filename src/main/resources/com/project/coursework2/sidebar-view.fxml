@@ -4,51 +4,33 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.project.coursework2.controller.SidebarController"
       styleClass="sidebar"
       spacing="5"
-      prefWidth="180">
-
-    <style>
-        .sidebar {
-            -fx-background-color: #4AADA8;
-            -fx-padding: 20;
-        }
-        .sidebar-btn {
-            -fx-background-color: transparent;
-            -fx-text-fill: white;
-            -fx-font-size: 14px;
-            -fx-alignment: CENTER-LEFT;
-            -fx-padding: 10 15;
-            -fx-min-width: 160px;
-            -fx-cursor: hand;
-            -fx-font-family: Arial;
-        }
-        .sidebar-btn:hover {
-            -fx-background-color: #E8735A;
-            -fx-background-radius: 8px;
-        }
-        .sidebar-title {
-            -fx-text-fill: white;
-            -fx-font-size: 13px;
-            -fx-font-family: Arial;
-            -fx-padding: 0 0 10 5;
-        }
-    </style>
+      prefWidth="200"
+      stylesheets="@styles.css">
 
     <Label text="Swansea University" styleClass="sidebar-title" wrapText="true"/>
 
-    <VBox spacing="5">
-        <padding><Insets top="20"/></padding>
+    <VBox spacing="2">
+        <padding><Insets top="10"/></padding>
         <Button text="🏠  Home" styleClass="sidebar-btn" onAction="#goHome" fx:id="homeBtn"/>
         <Button text="📅  Bookings" styleClass="sidebar-btn" onAction="#goBookings" fx:id="bookingsBtn"/>
         <Button text="🔧  Resources" styleClass="sidebar-btn" onAction="#goResources" fx:id="resourcesBtn"/>
-        <Button text="⚙️  Admin Panel" styleClass="sidebar-btn" onAction="#goAdmin" fx:id="adminBtn"/>
+
+        <!-- Admin Panel with expandable submenu -->
+        <Button text="⚙️  Admin Panel" styleClass="sidebar-btn" onAction="#toggleAdminMenu" fx:id="adminBtn"/>
+
+        <VBox fx:id="adminSubMenu" spacing="2" visible="false" managed="false">
+            <padding><Insets left="5"/></padding>
+            <Button text="👥  Users" styleClass="sidebar-sub-btn" onAction="#goAdminUsers" fx:id="adminUsersBtn"/>
+            <Button text="📦  Resources" styleClass="sidebar-sub-btn" onAction="#goAdminResources" fx:id="adminResourcesBtn"/>
+            <Button text="📋  Bookings" styleClass="sidebar-sub-btn" onAction="#goAdminBookings" fx:id="adminBookingsBtn"/>
+        </VBox>
+
         <Button text="👤  Account" styleClass="sidebar-btn" onAction="#goAccount" fx:id="accountBtn"/>
     </VBox>
 
