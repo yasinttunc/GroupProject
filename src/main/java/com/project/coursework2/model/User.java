@@ -7,6 +7,8 @@ public class User {
 
     private String userID;
     private String name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String role;
     private String password;
@@ -15,9 +17,24 @@ public class User {
     private List<Booking> bookings;
     private static int totalUsers;
 
-    public User(String id, String name, String email, String role){
+    public User(String id, String firstName, String lastName , String email, String role){
+        this.userID = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.password = "";
+        maxActiveBookings = 3;
+        this.certifications = new ArrayList<>();
+        this.bookings = new ArrayList<>();
+        totalUsers++;
+    }
+
+    public User(String id, String name, String firstName, String lastName , String email, String role){
         this.userID = id;
         this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.role = role;
         this.password = "";
@@ -42,6 +59,12 @@ public class User {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

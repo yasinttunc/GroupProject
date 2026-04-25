@@ -5,6 +5,7 @@ public class Booking {
     private String bookingID;
     private String userID;
     private String resourceID;
+    private String resourceName;
     private String startTime;
     private String endTime;
     private String date;
@@ -12,10 +13,11 @@ public class Booking {
     private int bookingCount;
     private String createdAt;
 
-    public Booking(String bookingID, String userID, String resourceID, String startTime, String endTime, String date, String status, int bookingCount, String createdAt) {
+    public Booking(String bookingID, String userID, String resourceID, String resourceName, String startTime, String endTime, String date, String status, int bookingCount, String createdAt) {
         this.bookingID = bookingID;
         this.userID = userID;
         this.resourceID = resourceID;
+        this.resourceName = resourceName;
         this.startTime = startTime;
         this.endTime = endTime;
         this.date = date;
@@ -23,6 +25,7 @@ public class Booking {
         this.bookingCount = bookingCount;
         this.createdAt = createdAt;
     }
+
 
     public String getBookingID() { return bookingID; }
     public void setBookingID(String bookingID) { this.bookingID = bookingID; }
@@ -32,6 +35,9 @@ public class Booking {
 
     public String getResourceID() { return resourceID; }
     public void setResourceID(String resourceID) { this.resourceID = resourceID; }
+
+    public String getResourceName() { return resourceName; }
+    public void setResourceName(String resourceName) { this.resourceName = resourceName; }
 
     public String getStartTime() { return startTime; }
     public void setStartTime(String startTime) { this.startTime = startTime; }

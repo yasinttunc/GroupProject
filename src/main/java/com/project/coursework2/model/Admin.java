@@ -3,8 +3,8 @@ package com.project.coursework2.model;
 public class Admin extends User {
 
     private int adminLevel;
-    public Admin(String id, String name, String email, int adminLevel) {
-        super(id, name, email, "Admin");
+    public Admin(String id, String firstName, String lastName, String email, int adminLevel) {
+        super(id, firstName,lastName, email, "Admin");
         this.adminLevel = adminLevel;
     }
 

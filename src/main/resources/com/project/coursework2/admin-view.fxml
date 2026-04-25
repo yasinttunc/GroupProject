@@ -3,101 +3,303 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.project.coursework2.AdminController"
-            fitToWidth="true"
-            style="-fx-background-color: #FDF6EC;">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.project.coursework2.controller.AdminController"
+           stylesheets="@styles.css"
+           styleClass="admin-container">
 
-    <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
-
-        <Label text="ADMIN PANEL"
-               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-
+    <!-- ═══════════════ USERS PAGE ═══════════════ -->
+    <VBox fx:id="usersPane" spacing="20" visible="true">
+        
+        <Label text="User Management" styleClass="admin-page-title"/>
+        
         <HBox spacing="20">
+            <!-- Left: Table Card -->
+            <VBox styleClass="admin-card" spacing="15" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label text="Users List" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="userSearchField" promptText="Search users..." styleClass="admin-search" prefWidth="250"/>
+                </HBox>
 
-            <!-- Manage Users -->
-            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="280">
-                <Label text="MANAGE USERS" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-                <TextField fx:id="userSearchField" promptText="Search users..."/>
-                <TableView fx:id="usersTable" prefHeight="200">
+                <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="userNameCol" text="Name" prefWidth="120"/>
-                        <TableColumn fx:id="userActionCol" text="Action" prefWidth="130"/>
+                        <TableColumn fx:id="userNameCol" text="Full Name" prefWidth="250"/>
+                        <TableColumn fx:id="userEmailCol" text="Email" prefWidth="300"/>
+                        <TableColumn fx:id="userRoleCol" text="System Role" prefWidth="150"/>
                     </columns>
                 </TableView>
-                <Label text="ROOM" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <ComboBox fx:id="roomDropdown" promptText="Study Room 101" prefWidth="240"/>
-                <Label text="SELECT RESOURCE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <ComboBox fx:id="resourceDropdown" promptText="Generic Kit 2" prefWidth="240"/>
-                <Label text="END DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <DatePicker fx:id="endDatePicker" prefWidth="240"/>
-                <HBox spacing="10">
-                    <Button text="Cancel" onAction="#handleCancel"
-                            style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
-                    <Button text="Save" onAction="#handleSaveUser"
-                            style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
-                </HBox>
-            </VBox>
 
-            <!-- Schedule Maintenance -->
-            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="280">
-                <Label text="SCHEDULE MAINTENANCE" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-                <Label text="RISK NAME" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <TextField fx:id="riskNameField" promptText="Study Room 101"/>
-                <HBox spacing="10">
-                    <VBox spacing="5">
-                        <Label text="START DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                        <DatePicker fx:id="mainStartDate" prefWidth="120"/>
-                    </VBox>
-                    <VBox spacing="5">
-                        <Label text="SNSE DATE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                        <DatePicker fx:id="mainEndDate" prefWidth="120"/>
-                    </VBox>
-                </HBox>
-                <Label text="DESCRIPTION" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <TextArea fx:id="descriptionField" promptText="What maintenance you want here" prefHeight="80"/>
-                <Button text="Activate" onAction="#handleActivate"
-                        style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
-            </VBox>
+                <!-- Users Edit Form -->
+                <VBox spacing="10" style="-fx-border-color: #E6E9ED transparent transparent transparent; -fx-padding: 15 0 0 0;">
+                    <HBox spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="First Name" styleClass="stat-label"/>
+                            <TextField fx:id="userFirstNameField" styleClass="admin-search"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Last Name" styleClass="stat-label"/>
+                            <TextField fx:id="userLastNameField" styleClass="admin-search"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Email" styleClass="stat-label"/>
+                            <TextField fx:id="userEmailField" styleClass="admin-search"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Password" styleClass="stat-label"/>
+                            <TextField fx:id="userPasswordField" styleClass="admin-search"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Role" styleClass="stat-label"/>
+                            <ComboBox fx:id="userRoleCombo" styleClass="admin-search" maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="User ID" styleClass="stat-label"/>
+                            <TextField fx:id="userIdField" styleClass="admin-search" editable="false"/>
+                        </VBox>
+                    </HBox>
 
-            <!-- Resource Management -->
-            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="280">
-                <Label text="RESOURCE MANAGEMENT" style="-fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-                <Label text="ADD NEW RESOURCE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A; -fx-font-weight: bold;"/>
-                <HBox spacing="10" alignment="CENTER">
-                    <VBox spacing="5" style="-fx-background-color: #FDF6EC; -fx-padding: 10; -fx-background-radius: 8;" prefWidth="70" alignment="CENTER">
-                        <Label text="A" style="-fx-font-weight: bold;"/>
-                        <Label text="Study Room" style="-fx-font-size: 9px; -fx-text-fill: #7A7A7A;"/>
-                    </VBox>
-                    <VBox spacing="5" style="-fx-background-color: #FDF6EC; -fx-padding: 10; -fx-background-radius: 8;" prefWidth="70" alignment="CENTER">
-                        <Label text="B" style="-fx-font-weight: bold;"/>
-                        <Label text="Meeting Room" style="-fx-font-size: 9px; -fx-text-fill: #7A7A7A;"/>
-                    </VBox>
-                    <VBox spacing="5" style="-fx-background-color: #FDF6EC; -fx-padding: 10; -fx-background-radius: 8;" prefWidth="70" alignment="CENTER">
-                        <Label text="C" style="-fx-font-weight: bold;"/>
-                        <Label text="Camera Kit 2" style="-fx-font-size: 9px; -fx-text-fill: #7A7A7A;"/>
-                    </VBox>
-                </HBox>
-                <Label text="SUMMARY" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A; -fx-font-weight: bold;"/>
-                <HBox spacing="10">
-                    <VBox spacing="3" style="-fx-background-color: #4AADA8; -fx-padding: 8; -fx-background-radius: 5;" prefWidth="70" alignment="CENTER">
-                        <Label text="Available" style="-fx-text-fill: white; -fx-font-size: 10px;"/>
-                    </VBox>
-                    <VBox spacing="3" style="-fx-background-color: #4AADA8; -fx-padding: 8; -fx-background-radius: 5;" prefWidth="70" alignment="CENTER">
-                        <Label text="Available" style="-fx-text-fill: white; -fx-font-size: 10px;"/>
-                    </VBox>
-                    <VBox spacing="3" style="-fx-background-color: #E8735A; -fx-padding: 8; -fx-background-radius: 5;" prefWidth="70" alignment="CENTER">
-                        <Label text="Maintenance" style="-fx-text-fill: white; -fx-font-size: 10px;"/>
-                    </VBox>
-                </HBox>
-                <HBox spacing="10">
-                    <Button text="Save" onAction="#handleSaveResource"
-                            style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;"/>
-                </HBox>
-            </VBox>
+                    <!-- Dynamic Role-Specific Fields -->
+                    <VBox fx:id="dynamicFieldsContainer" spacing="10">
+                        <!-- Student Fields -->
+                        <VBox fx:id="studentFieldsBox" spacing="10" managed="false" visible="false">
+                            <HBox spacing="15">
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Year of Study" styleClass="stat-label"/>
+                                    <TextField fx:id="studentYearField" styleClass="admin-search" promptText="e.g. 1, 2, 3..."/>
+                                </VBox>
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Course Name" styleClass="stat-label"/>
+                                    <TextField fx:id="studentCourseField" styleClass="admin-search" promptText="e.g. Computer Science"/>
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="15">
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Enrollment Date" styleClass="stat-label"/>
+                                    <TextField fx:id="studentEnrollmentField" styleClass="admin-search" promptText="e.g. YYYY-MM-DD"/>
+                                </VBox>
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <!-- Empty spacer -->
+                                </VBox>
+                            </HBox>
+                        </VBox>
 
+                        <!-- Staff Fields -->
+                        <HBox fx:id="staffFieldsBox" spacing="15" managed="false" visible="false">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Job Title" styleClass="stat-label"/>
+                                <TextField fx:id="staffJobTitleField" styleClass="admin-search" promptText="e.g. Lecturer"/>
+                            </VBox>
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Department" styleClass="stat-label"/>
+                                <TextField fx:id="staffDeptField" styleClass="admin-search" promptText="e.g. Computing"/>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Admin Fields -->
+                        <HBox fx:id="adminFieldsBox" spacing="15" managed="false" visible="false">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Admin Level" styleClass="stat-label"/>
+                                <TextField fx:id="adminLevelField" styleClass="admin-search" promptText="e.g. 1, 2..."/>
+                            </VBox>
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <!-- Empty spacer for layout consistency -->
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="Save User" styleClass="accept-btn" onAction="#handleSaveUser" fx:id="saveUserBtn"/>
+                        <Button text="Add User" styleClass="accept-btn" onAction="#handleAddUser" fx:id="addUserBtn" style="-fx-background-color: #3498DB;"/>
+                        <Button text="Delete" styleClass="refuse-btn" onAction="#handleDeleteUser" fx:id="deleteUserBtn"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+            
+            <!-- Right: Stats Panel -->
+            <VBox spacing="15" prefWidth="250">
+                <VBox styleClass="stat-badge">
+                    <Label fx:id="userCountLabel" text="0" styleClass="stat-number"/>
+                    <Label text="Total Users" styleClass="stat-label"/>
+                </VBox>
+                <VBox styleClass="stat-badge">
+                    <Label text="Active" styleClass="stat-number" style="-fx-text-fill: #26B99A;"/>
+                    <Label text="System Status" styleClass="stat-label"/>
+                </VBox>
+            </VBox>
         </HBox>
-
     </VBox>
-</ScrollPane>
+
+    <!-- ═══════════════ RESOURCES PAGE ═══════════════ -->
+    <VBox fx:id="resourcesPane" spacing="20" visible="false">
+        
+        <Label text="Resource Management" styleClass="admin-page-title"/>
+        
+        <HBox spacing="20" VBox.vgrow="ALWAYS">
+            <VBox styleClass="admin-card" spacing="15" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label text="Resources Directory" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="resourceSearchField" promptText="Search resources..." styleClass="admin-search" prefWidth="250"/>
+                </HBox>
+
+                <TableView fx:id="resourcesTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="resNameCol" text="Resource Name" prefWidth="200"/>
+                        <TableColumn fx:id="resTypeCol" text="Category" prefWidth="120"/>
+                        <TableColumn fx:id="resRequiredRoleCol" text="Required Role" prefWidth="110"/>
+                        <TableColumn fx:id="resDurationCol" text="Max Duration(m)" prefWidth="120"/>
+                        <TableColumn fx:id="resBuildingCol" text="Building" prefWidth="120"/>
+                        <TableColumn fx:id="resRoomCol" text="Room" prefWidth="100"/>
+                        <TableColumn fx:id="resActiveCol" text="Status" prefWidth="90"/>
+                    </columns>
+                </TableView>
+
+                <!-- Resources Edit Form -->
+                <VBox spacing="10" style="-fx-border-color: #E6E9ED transparent transparent transparent; -fx-padding: 15 0 0 0;">
+                    <HBox spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Resource Name" styleClass="stat-label"/>
+                            <TextField fx:id="resNameField" styleClass="admin-search"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Category" styleClass="stat-label"/>
+                            <ComboBox fx:id="resTypeCombo" styleClass="admin-search" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Building" styleClass="stat-label"/>
+                            <TextField fx:id="resBuildingField" styleClass="admin-search"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Room" styleClass="stat-label"/>
+                            <TextField fx:id="resRoomField" styleClass="admin-search"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Required Role" styleClass="stat-label"/>
+                            <ComboBox fx:id="resRoleCombo" styleClass="admin-search" maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Max Duration (mins)" styleClass="stat-label"/>
+                            <TextField fx:id="resMaxDurationField" styleClass="admin-search" promptText="e.g. 120"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="15">
+                         <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Status" styleClass="stat-label"/>
+                            <ComboBox fx:id="resActiveCombo" styleClass="admin-search" maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Resource ID" styleClass="stat-label"/>
+                            <TextField fx:id="resIdField" styleClass="admin-search" editable="false"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="Save Resource" styleClass="accept-btn" onAction="#handleSaveResource" fx:id="saveResourceBtn"/>
+                        <Button text="Add Resource" styleClass="accept-btn" onAction="#handleAddResource" fx:id="addResourceBtn" style="-fx-background-color: #3498DB;"/>
+                        <Button text="Delete" styleClass="refuse-btn" onAction="#handleDeleteResource" fx:id="deleteResourceBtn"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+            
+            <VBox spacing="15" prefWidth="250">
+                <VBox styleClass="stat-badge">
+                    <Label fx:id="resourceCountLabel" text="0" styleClass="stat-number"/>
+                    <Label text="Total Resources" styleClass="stat-label"/>
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- ═══════════════ BOOKINGS PAGE ═══════════════ -->
+    <ScrollPane fx:id="bookingsPane" fitToWidth="true" visible="false" style="-fx-background-color: transparent; -fx-background: transparent;">
+        <VBox spacing="20" styleClass="admin-container">
+            
+            <Label text="Booking Administration" styleClass="admin-page-title"/>
+
+            <HBox spacing="20">
+                <VBox styleClass="stat-badge" HBox.hgrow="ALWAYS">
+                    <Label fx:id="pendingCountLabel" text="0" styleClass="stat-number" style="-fx-text-fill: #D9534F;"/>
+                    <Label text="Pending Approvals" styleClass="stat-label"/>
+                </VBox>
+                <VBox styleClass="stat-badge" HBox.hgrow="ALWAYS">
+                    <Label fx:id="totalBookingsLabel" text="0" styleClass="stat-number"/>
+                    <Label text="Total Bookings Lifetime" styleClass="stat-label"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="20">
+                <!-- Left: Pending -->
+                <VBox styleClass="admin-card" spacing="15" prefWidth="400">
+                    <Label text="Needs Approval" styleClass="section-title"/>
+                    <VBox fx:id="pendingRequestsContainer" spacing="10"/>
+                </VBox>
+
+                <!-- Right: History -->
+                <VBox styleClass="admin-card" spacing="15" HBox.hgrow="ALWAYS">
+                    <Label text="Complete History" styleClass="section-title"/>
+                    <TableView fx:id="bookingHistoryTable" prefHeight="400">
+                        <columns>
+                            <TableColumn fx:id="histBookingIdCol" text="Booking ID" prefWidth="120"/>
+                            <TableColumn fx:id="histUserIdCol" text="User" prefWidth="100"/>
+                            <TableColumn fx:id="histResourceCol" text="Resource" prefWidth="200"/>
+                            <TableColumn fx:id="histDateCol" text="Date" prefWidth="100"/>
+                            <TableColumn fx:id="histTimeCol" text="Time" prefWidth="120"/>
+                            <TableColumn fx:id="histStatusCol" text="Status" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+
+                    <!-- Bookings Edit Form -->
+                    <VBox spacing="10" style="-fx-border-color: #E6E9ED transparent transparent transparent; -fx-padding: 15 0 0 0;">
+                        <HBox spacing="15">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Booking ID" styleClass="stat-label"/>
+                                <TextField fx:id="bookIdField" styleClass="admin-search" editable="false"/>
+                            </VBox>
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="User ID / Resource ID" styleClass="stat-label"/>
+                                <HBox spacing="5">
+                                    <TextField fx:id="bookUserIdField" styleClass="admin-search" editable="false" promptText="User" HBox.hgrow="ALWAYS"/>
+                                    <TextField fx:id="bookResIdField" styleClass="admin-search" editable="false" promptText="Resource" HBox.hgrow="ALWAYS"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                        <HBox spacing="15">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Date" styleClass="stat-label"/>
+                                <TextField fx:id="bookDateField" styleClass="admin-search"/>
+                            </VBox>
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Status" styleClass="stat-label"/>
+                                <ComboBox fx:id="bookStatusCombo" styleClass="admin-search" maxWidth="Infinity"/>
+                            </VBox>
+                        </HBox>
+                        <HBox spacing="15">
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="Start Time" styleClass="stat-label"/>
+                                <TextField fx:id="bookStartTimeField" styleClass="admin-search"/>
+                            </VBox>
+                            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                <Label text="End Time" styleClass="stat-label"/>
+                                <TextField fx:id="bookEndTimeField" styleClass="admin-search"/>
+                            </VBox>
+                        </HBox>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Button text="Save Booking" styleClass="accept-btn" onAction="#handleSaveBooking" fx:id="saveBookingBtn"/>
+                            <Button text="Delete" styleClass="refuse-btn" onAction="#handleDeleteBooking" fx:id="deleteBookingBtn"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </HBox>
+
+        </VBox>
+    </ScrollPane>
+
+</StackPane>

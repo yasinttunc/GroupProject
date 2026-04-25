@@ -6,8 +6,8 @@ public class Staff extends User {
     private String jobTitle;
     private String department;
 
-    public Staff (String id, String name, String email, String jobTitle, String department){
-        super(id, name, email, "Staff");
+    public Staff (String id, String firstName,String lastName, String email, String jobTitle, String department){
+        super(id, firstName,lastName, email, "Staff");
         this.staffID = id;
         this.jobTitle = jobTitle;
         this.department = department;

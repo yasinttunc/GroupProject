@@ -3,7 +3,13 @@
     "allow": [
       "mcp__ide__getDiagnostics",
       "Bash(mvn compile:*)",
-      "Bash(mvn clean:*)"
+      "Bash(mvn clean:*)",
+      "Bash(sqlite3 \"/Users/yasintunc/.gemini/antigravity/scratch/Coursework2/university_booking \\(2\\).db\" \"ALTER TABLE User DROP COLUMN createdAt;\")",
+      "Bash(sqlite3 \"/Users/yasintunc/.gemini/antigravity/scratch/Coursework2/university_booking \\(2\\).db\" \"ALTER TABLE Resource ADD COLUMN createdDate TEXT;\")",
+      "Bash(sqlite3 \"/Users/yasintunc/.gemini/antigravity/scratch/Coursework2/university_booking \\(2\\).db\" \"ALTER TABLE Resource ADD COLUMN createdTime TEXT; UPDATE Resource SET createdDate=SUBSTR\\(createdAt,1,10\\), createdTime=SUBSTR\\(createdAt,12\\); ALTER TABLE Resource DROP COLUMN createdAt;\")",
+      "Bash(sqlite3 \"/Users/yasintunc/.gemini/antigravity/scratch/Coursework2/university_booking \\(2\\).db\" \"ALTER TABLE AdminAuditLog ADD COLUMN performedDate TEXT; ALTER TABLE AdminAuditLog ADD COLUMN performedTime TEXT; UPDATE AdminAuditLog SET performedDate=SUBSTR\\(performedAt,1,10\\), performedTime=SUBSTR\\(performedAt,12\\); ALTER TABLE AdminAuditLog DROP COLUMN performedAt;\")",
+      "Bash(sqlite3 \"/Users/yasintunc/.gemini/antigravity/scratch/Coursework2/university_booking \\(2\\).db\" \"ALTER TABLE BookingHistory ADD COLUMN changedDate TEXT; ALTER TABLE BookingHistory ADD COLUMN changedTime TEXT; UPDATE BookingHistory SET changedDate=SUBSTR\\(changedAt,1,10\\), changedTime=SUBSTR\\(changedAt,12\\); ALTER TABLE BookingHistory DROP COLUMN changedAt;\")",
+      "Bash(sqlite3:*)"
     ]
   }
 }
