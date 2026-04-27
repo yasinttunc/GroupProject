@@ -2,38 +2,65 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.project.coursework2.controller.LoginController"
       alignment="CENTER"
-      spacing="20"
-      style="-fx-background-color: #FDF6EC; -fx-padding: 60;">
+      spacing="15"
+      style="-fx-background-color: #FDF6EC; -fx-padding: 40;">
 
-    <Label text="CRBAS"
-           style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
+    <StackPane alignment="CENTER" maxWidth="160" maxHeight="160">
+        <Circle fill="#E8F7F7" stroke="#4AADA8" strokeWidth="2.5" radius="78"/>
+        <Circle fill="#9FD9D7" stroke="#4AADA8" strokeWidth="1" radius="62"/>
+        <Circle fill="#E8F7F7" stroke="#9FD9D7" strokeWidth="1" radius="48"/>
+        <VBox alignment="CENTER" spacing="4">
+            <Rectangle width="70" height="6" arcWidth="6" arcHeight="6" fill="#3D3D3D"/>
+            <Rectangle width="50" height="6" arcWidth="6" arcHeight="6" fill="#4AADA8"/>
+            <Rectangle width="60" height="6" arcWidth="6" arcHeight="6" fill="#4AADA8"/>
+            <Rectangle width="40" height="6" arcWidth="6" arcHeight="6" fill="#E8735A"/>
+            <Label text="CRBAS"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+        </VBox>
+    </StackPane>
 
-    <Label text="Campus Resource Booking System"
-           style="-fx-font-size: 14px; -fx-text-fill: #7A7A7A;"/>
+    <Label text="Campus Resource Booking &amp; Availability System"
+           wrapText="true"
+           maxWidth="220"
+           alignment="CENTER"
+           style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #4AADA8; -fx-text-alignment: center;"/>
 
-    <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10;" maxWidth="350">
+    <VBox spacing="15"
+          style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10;"
+          maxWidth="350">
 
-        <Label text="LOGIN" style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #3D3D3D;"/>
+        <Label text="LOGIN"
+               style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #3D3D3D;"/>
 
         <VBox spacing="5">
-            <Label text="Email / Student ID" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-            <TextField fx:id="usernameField" promptText="Enter your email or ID" prefWidth="290"/>
+            <Label text="Email / Student ID"
+                   style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            <TextField fx:id="usernameField"
+                       promptText="Enter your email or ID"
+                       prefWidth="290"/>
         </VBox>
 
         <VBox spacing="5">
-            <Label text="Password" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-            <PasswordField fx:id="passwordField" promptText="Enter your password" prefWidth="290"/>
+            <Label text="Password"
+                   style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            <PasswordField fx:id="passwordField"
+                           promptText="Enter your password"
+                           prefWidth="290"/>
         </VBox>
 
-        <Label fx:id="errorLabel" text=""
+        <Label fx:id="errorLabel"
+               text=""
                style="-fx-text-fill: #E8735A; -fx-font-size: 11px;"/>
 
-        <Button text="Login" onAction="#handleLogin"
+        <Button text="Login"
+                onAction="#handleLogin"
                 prefWidth="290"
                 style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-font-size: 14px;
                        -fx-padding: 10; -fx-background-radius: 8px; -fx-cursor: hand;"/>
