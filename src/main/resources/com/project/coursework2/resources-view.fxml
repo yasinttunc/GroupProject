@@ -11,28 +11,24 @@
 
     <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
 
-        <Label text="RESOURCES"
-               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+        <Label text="RESOURCES" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
 
-        <Label text="ROOMS"
-               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+        <Label text="ROOMS" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
 
-        <ScrollPane fitToWidth="false" hbarPolicy="NEVER" vbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-border-color: transparent;">
-            <HBox spacing="15" style="-fx-background-color: #FDF6EC;" fx:id="roomsContainer"></HBox>
+        <ScrollPane fx:id="roomsScrollPane" hbarPolicy="NEVER" vbarPolicy="NEVER" style="-fx-background: #FDF6EC; -fx-background-color: transparent; -fx-border-color: transparent;">
+            <HBox fx:id="roomsContainer" spacing="15" style="-fx-background-color: #FDF6EC;"></HBox>
         </ScrollPane>
 
-        <Label text="EQUIPMENT"
-               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+        <Label text="EQUIPMENT" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
 
-        <ScrollPane fitToWidth="false" hbarPolicy="NEVER" vbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-border-color: transparent;">
-            <HBox spacing="15" style="-fx-background-color: #FDF6EC;" fx:id="equipmentContainer"></HBox>
+        <ScrollPane fx:id="equipmentScrollPane" hbarPolicy="NEVER" vbarPolicy="NEVER" style="-fx-background: #FDF6EC; -fx-background-color: transparent; -fx-border-color: transparent;">
+            <HBox fx:id="equipmentContainer" spacing="15" style="-fx-background-color: #FDF6EC;"></HBox>
         </ScrollPane>
 
-        <Label text="LABS"
-               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+        <Label text="LABS" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
 
-        <ScrollPane fitToWidth="false" hbarPolicy="NEVER" vbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-border-color: transparent;">
-            <HBox spacing="15" style="-fx-background-color: #FDF6EC;" fx:id="labsContainer"></HBox>
+        <ScrollPane fx:id="labsScrollPane" hbarPolicy="NEVER" vbarPolicy="NEVER" style="-fx-background: #FDF6EC; -fx-background-color: transparent; -fx-border-color: transparent;">
+            <HBox fx:id="labsContainer" spacing="15" style="-fx-background-color: #FDF6EC;"></HBox>
         </ScrollPane>
     </VBox>
 </ScrollPane>
