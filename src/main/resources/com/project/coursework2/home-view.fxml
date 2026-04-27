@@ -5,55 +5,159 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.project.coursework2.controller.HomeController"
+            fx:controller="com.project.coursework2.HomeController"
             fitToWidth="true"
             style="-fx-background-color: #FDF6EC;">
 
     <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
 
         <Label text="HOME DASHBOARD"
-               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D; -fx-font-family: Arial;"/>
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
 
-        <HBox spacing="20">
-            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="160">
-                <Label text="TODAY REQUESTS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <Label fx:id="todayRequestsCount" text="5" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
-                <Label text="Requests" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+        <!-- Stats Row -->
+        <HBox spacing="15">
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="ACTIVE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <Label fx:id="activeCount" text="2 / 5" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
+                <ProgressBar fx:id="activeProgress" progress="0.4" prefWidth="120" style="-fx-accent: #4AADA8;"/>
             </VBox>
-            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="160">
-                <Label text="PENDING BOOKINGS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <Label fx:id="pendingCount" text="12" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #E8735A;"/>
-                <Label text="Bookings" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="PENDING" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <Label fx:id="pendingCount" text="1" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #E8735A;"/>
             </VBox>
-            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" prefWidth="160">
-                <Label text="TOTAL BOOKINGS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <Label fx:id="totalCount" text="48" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-                <Label text="Bookings" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="CERTS" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <Label fx:id="certsCount" text="2 / 4" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #9B59B6;"/>
+            </VBox>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
+                <Label text="HOURS USED" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                <Label fx:id="hoursUsed" text="18h" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
             </VBox>
         </HBox>
 
+        <HBox spacing="20">
 
-        <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);">
-            <Label text="New Booking Request" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
-            <HBox spacing="25" alignment="CENTER_LEFT">
-                <VBox spacing="8" HBox.hgrow="ALWAYS">
-                    <Label text="Resource" style="-fx-font-size: 13px; -fx-text-fill: #555555; -fx-font-weight: bold;"/>
-                    <ComboBox fx:id="resourceDropdown" promptText="Select Resource" maxWidth="Infinity" style="-fx-min-height: 40px; -fx-background-radius: 6; -fx-border-color: #E0E0E0; -fx-border-radius: 6; -fx-background-color: #FAFAFA;"/>
-                </VBox>
-                <VBox spacing="8" HBox.hgrow="SOMETIMES">
-                    <Label text="Date" style="-fx-font-size: 13px; -fx-text-fill: #555555; -fx-font-weight: bold;"/>
-                    <DatePicker fx:id="startDatePicker" prefWidth="180" style="-fx-min-height: 40px;"/>
-                </VBox>
-                <VBox spacing="8" HBox.hgrow="SOMETIMES">
-                    <Label text="Time" style="-fx-font-size: 13px; -fx-text-fill: #555555; -fx-font-weight: bold;"/>
-                    <TextField fx:id="timeField" promptText="HH:MM" prefWidth="100" style="-fx-min-height: 40px; -fx-background-radius: 6; -fx-border-color: #E0E0E0; -fx-border-radius: 6; -fx-prompt-text-fill: #AAAAAA;"/>
-                </VBox>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 10 0 0 0;">
-                <Button text="Submit Request" onAction="#handleSubmit"
-                        style="-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(74,173,168,0.3), 8, 0, 0, 4);"/>
-            </HBox>
-        </VBox>
+            <!-- Left Column -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS">
 
+                <!-- Live Availability -->
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label text="Live availability — Study rooms"
+                               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="■" style="-fx-text-fill: #4AADA8;"/>
+                            <Label text="Free" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="■" style="-fx-text-fill: #E8735A;"/>
+                            <Label text="Booked" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="■" style="-fx-text-fill: #6BB5FF;"/>
+                            <Label text="Yours" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="■" style="-fx-text-fill: #F5C842;"/>
+                            <Label text="Closed" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        </HBox>
+                    </HBox>
+                    <GridPane fx:id="availabilityGrid" hgap="4" vgap="4"/>
+                    <Label text="Click any free slot to book instantly"
+                           style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                </VBox>
+
+                <!-- Smart Suggestions -->
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                    <Label text="Smart suggestions"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                    <HBox spacing="10">
+                        <VBox spacing="5" style="-fx-background-color: #E8F5F4; -fx-padding: 15; -fx-background-radius: 8;" prefWidth="180">
+                            <Label text="Best free slot now" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="Study Room B" style="-fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
+                            <Label text="11:00-13:00 open" style="-fx-font-size: 11px; -fx-text-fill: #3D3D3D;"/>
+                            <Label text="4 seats, whiteboard" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                        </VBox>
+                        <VBox spacing="5" style="-fx-background-color: #EEE8F5; -fx-padding: 15; -fx-background-radius: 8;" prefWidth="180">
+                            <Label text="Your usual slot" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="Computer Lab 3" style="-fx-font-weight: bold; -fx-text-fill: #9B59B6;"/>
+                            <Label text="Mon 09:00-11:00" style="-fx-font-size: 11px; -fx-text-fill: #3D3D3D;"/>
+                            <Label text="You book this weekly" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                            <Button text="Rebook" onAction="#handleRebook"
+                                    style="-fx-background-color: #9B59B6; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-size: 11px;"/>
+                        </VBox>
+                        <VBox spacing="5" style="-fx-background-color: #FFF8E1; -fx-padding: 15; -fx-background-radius: 8;" prefWidth="180">
+                            <Label text="Certification unlock" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="Chemistry Lab" style="-fx-font-weight: bold; -fx-text-fill: #F5C842;"/>
+                            <Label text="Needs: Chemical Handling" style="-fx-font-size: 11px; -fx-text-fill: #3D3D3D;"/>
+                            <Label text="Complete to gain access" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                            <Button text="View cert" onAction="#handleViewCert"
+                                    style="-fx-background-color: transparent; -fx-border-color: #7A7A7A; -fx-border-radius: 5; -fx-cursor: hand; -fx-font-size: 11px;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+
+            <!-- Right Column -->
+            <VBox spacing="20" prefWidth="280">
+
+                <!-- Next Up -->
+                <VBox spacing="8" style="-fx-background-color: #E8F5F4; -fx-padding: 20; -fx-background-radius: 10;">
+                    <Label text="Next up" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                    <Label text="Study Room A" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
+                    <Label text="Today 14:00 - 16:00" style="-fx-font-size: 12px; -fx-text-fill: #3D3D3D;"/>
+                    <HBox spacing="5">
+                        <Label text="6 seats" style="-fx-background-color: white; -fx-padding: 3 8; -fx-background-radius: 5; -fx-font-size: 11px;"/>
+                        <Label text="Projector" style="-fx-background-color: white; -fx-padding: 3 8; -fx-background-radius: 5; -fx-font-size: 11px;"/>
+                        <Label text="Whiteboard" style="-fx-background-color: white; -fx-padding: 3 8; -fx-background-radius: 5; -fx-font-size: 11px;"/>
+                    </HBox>
+                    <Label text="Library, Floor 1" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                </VBox>
+
+                <!-- My Certifications -->
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                    <Label text="My certifications" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                    <VBox spacing="3">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Lab Safety" HBox.hgrow="ALWAYS" style="-fx-font-size: 12px;"/>
+                            <Label text="Valid" style="-fx-text-fill: #4AADA8; -fx-font-size: 12px;"/>
+                        </HBox>
+                        <ProgressBar progress="0.9" prefWidth="240" style="-fx-accent: #4AADA8;"/>
+                        <Label text="Expires Dec 2027" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                    </VBox>
+                    <VBox spacing="3">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Fire Safety" HBox.hgrow="ALWAYS" style="-fx-font-size: 12px;"/>
+                            <Label text="Valid" style="-fx-text-fill: #4AADA8; -fx-font-size: 12px;"/>
+                        </HBox>
+                        <ProgressBar progress="0.6" prefWidth="240" style="-fx-accent: #F5C842;"/>
+                        <Label text="Expires Aug 2026" style="-fx-font-size: 10px; -fx-text-fill: #7A7A7A;"/>
+                    </VBox>
+                    <VBox spacing="3">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Chemical Handling" HBox.hgrow="ALWAYS" style="-fx-font-size: 12px;"/>
+                            <Label text="Missing" style="-fx-text-fill: #E8735A; -fx-font-size: 12px;"/>
+                        </HBox>
+                        <ProgressBar progress="0.0" prefWidth="240" style="-fx-accent: #E8735A;"/>
+                        <Label text="Required for Chemistry Lab" style="-fx-font-size: 10px; -fx-text-fill: #E8735A;"/>
+                    </VBox>
+                </VBox>
+
+                <!-- Maintenance Alerts -->
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                    <Label text="Maintenance alerts" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <CheckBox/>
+                        <VBox spacing="2">
+                            <Label text="Study Room C" style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
+                            <Label text="Closed 16:00-18:00 today - cleaning" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <CheckBox/>
+                        <VBox spacing="2">
+                            <Label text="3D Printer" style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
+                            <Label text="Calibration Mon 10:00-12:00" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </HBox>
     </VBox>
 </ScrollPane>
