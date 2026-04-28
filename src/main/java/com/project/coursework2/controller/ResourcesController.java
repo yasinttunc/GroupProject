@@ -90,6 +90,7 @@ public class ResourcesController {
 
         Button bookButton = new Button("Book");
         bookButton.setStyle("-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
+        enableBookButton(bookButton, resource);
 
         card.getChildren().addAll(nameLabel, locationLabel, bookButton);
         return card;
@@ -109,6 +110,7 @@ public class ResourcesController {
 
         Button bookButton = new Button("Book");
         bookButton.setStyle("-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
+        enableBookButton(bookButton, resource);
 
         card.getChildren().addAll(nameLabel, locationLabel, bookButton);
         return card;
@@ -128,9 +130,17 @@ public class ResourcesController {
 
         Button bookButton = new Button("Book");
         bookButton.setStyle("-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
+        enableBookButton(bookButton, resource);
 
         card.getChildren().addAll(nameLabel, locationLabel, bookButton);
         return card;
+    }
+
+    private void enableBookButton(Button bookButton, ResourceRow resource) {
+        bookButton.setOnAction(e -> {
+            SidebarController sidebar = SidebarController.getInstance();
+            sidebar.goBookings(resource);
+        });
     }
 
     private List<ResourceRow> filterByType(List<ResourceRow> resources, String type) {

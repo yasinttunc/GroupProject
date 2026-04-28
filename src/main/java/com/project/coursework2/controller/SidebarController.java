@@ -3,10 +3,13 @@ package com.project.coursework2.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
+
+import com.project.coursework2.data.ResourcesDatabaseManager.ResourceRow;
 
 /**
  * Controls the sidebar navigation, including the expandable Admin Panel submenu.
@@ -19,6 +22,9 @@ public class SidebarController {
     @FXML private Button adminResourcesBtn;
     @FXML private Button adminBookingsBtn;
 
+    // Lazy static to allow other controllers to reference the sidebar
+    private static SidebarController instance;
+
     public static StackPane mainContentArea;
 
     /** Tracks whether the admin submenu is currently expanded. */
@@ -26,6 +32,7 @@ public class SidebarController {
 
     @FXML
     public void initialize() {
+        instance = this;
         String role = SessionManager.getUserRole();
         boolean isAdmin = "Admin".equals(role);
         adminBtn.setVisible(isAdmin);
@@ -33,6 +40,13 @@ public class SidebarController {
         // Submenu starts hidden
         adminSubMenu.setVisible(false);
         adminSubMenu.setManaged(false);
+    }
+
+    // ───────────────── Helper ─────────────────
+
+    // Returns a static reference to the controller
+    public static SidebarController getInstance() {
+        return instance;
     }
 
     // ───────────────── Page Loading ─────────────────
@@ -58,12 +72,6 @@ public class SidebarController {
     }
 
     @FXML
-    private void goBookings() {
-        collapseAdminMenu();
-        loadPage("bookings-view.fxml");
-    }
-
-    @FXML
     private void goResources() {
         collapseAdminMenu();
         loadPage("resources-view.fxml");
@@ -73,6 +81,32 @@ public class SidebarController {
     private void goAccount() {
         collapseAdminMenu();
         loadPage("account-view.fxml");
+    }
+
+
+    @FXML
+    private void goBookings() {
+        collapseAdminMenu();
+        loadPage("bookings-view.fxml");
+    }
+
+    // Overloaded to allow pre-filling of the form
+    @FXML
+    public void goBookings(ResourceRow resource) {
+        collapseAdminMenu();
+        
+        try {
+            if (mainContentArea != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/project/coursework2/bookings-view.fxml"));
+                Node page = loader.load();
+                mainContentArea.getChildren().setAll(page);
+
+                BookingsController controller = loader.getController();
+                controller.prefillResourceField(resource);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // ───────────────── Admin Submenu ─────────────────
