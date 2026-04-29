@@ -2,8 +2,9 @@ package com.project.coursework2.controller;
 
 import java.sql.SQLException;
 
-import com.project.coursework2.data.UserDatabaseManager;
+import com.project.coursework2.model.Role;
 import com.project.coursework2.model.User;
+import com.project.coursework2.service.UserService;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,17 +13,31 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+/**
+ * Controller for the login screen (login-view.fxml).
+ * Authenticates users against the database using email and password,
+ * stores the session via {@link SessionManager}, and routes the user
+ * to the appropriate application layout based on their role.
+ *
+ * @author CRBAS Team
+ * @version 1.0
+ */
 public class LoginController {
 
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
 
+    /** Called automatically by JavaFX after FXML injection. */
     @FXML
     public void initialize() {
         System.out.println("Login page loaded");
     }
 
+    /**
+     * Validates the entered credentials and navigates to the main application on success.
+     * Displays an inline error label if credentials are empty or invalid.
+     */
     @FXML
     private void handleLogin() {
         String email = usernameField.getText();
@@ -33,15 +48,14 @@ public class LoginController {
             return;
         }
         try {
-            User user = UserDatabaseManager.getUser(email,password);
+            User user = UserService.login(email, password);
             if (user != null) {
                 SessionManager.setCurrentUser(user);
                 SessionManager.setUserRole(user.getRole());
-                switch (user.getRole()) {
-                    case "Admin" -> loadAdminApp();
-                    case "Staff" -> loadStaffApp();
-                    default -> loadMainApp();
-                }
+                SessionManager.setUserID(user.getUserID());
+                Role role = Role.from(user.getRole());
+                if (role == Role.ADMIN || role == Role.STAFF) loadAdminApp();
+                else loadMainApp();
                 return;
             }
 

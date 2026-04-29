@@ -1,0 +1,49 @@
+.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3D3D3D;
+}
+
+.hint {
+    -fx-text-fill: #9AA0A6;
+    -fx-font-size: 12px;
+}
+
+.hour-header .label {
+    -fx-text-fill: #9AA0A6;
+    -fx-font-size: 11px;
+}
+
+.room-toggle {
+    -fx-background-radius: 8;
+    -fx-padding: 6 14;
+    -fx-background-color: #EEF0F2;
+    -fx-text-fill: #333333;
+}
+
+.room-toggle:selected {
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: white;
+}
+
+.dot {
+    -fx-min-width: 14;
+    -fx-min-height: 14;
+    -fx-background-radius: 4;
+}
+
+.dot-free {
+    -fx-background-color: #4AADA8;
+}
+
+.dot-booked {
+    -fx-background-color: #E8735A;
+}
+
+.dot-yours {
+    -fx-background-color: #6BB5FF;
+}
+
+.dot-closed {
+    -fx-background-color: #F5C842;
+}

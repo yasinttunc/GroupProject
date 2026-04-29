@@ -32,6 +32,8 @@
         </VBox>
 
         <Button text="👤  Account" styleClass="sidebar-btn" onAction="#goAccount" fx:id="accountBtn"/>
+        <Button text="🚪  Logout" styleClass="sidebar-btn" onAction="#handleLogout"
+                style="-fx-text-fill: #E8735A;"/>
     </VBox>
 
 </VBox>

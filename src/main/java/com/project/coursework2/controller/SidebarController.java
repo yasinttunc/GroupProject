@@ -1,5 +1,6 @@
 package com.project.coursework2.controller;
 
+import com.project.coursework2.model.Role;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -34,7 +35,7 @@ public class SidebarController {
     public void initialize() {
         instance = this;
         String role = SessionManager.getUserRole();
-        boolean isAdmin = "Admin".equals(role);
+        boolean isAdmin = Role.ADMIN == Role.from(role);
         adminBtn.setVisible(isAdmin);
         adminBtn.setManaged(isAdmin);
         // Submenu starts hidden
@@ -52,12 +53,14 @@ public class SidebarController {
     // ───────────────── Page Loading ─────────────────
 
     private void loadPage(String fxmlFile) {
+        if (mainContentArea == null) return;
         try {
-            if (mainContentArea != null) {
-                Node page = FXMLLoader.load(getClass().getResource(
-                        "/com/project/coursework2/" + fxmlFile));
-                mainContentArea.getChildren().setAll(page);
+            java.net.URL url = getClass().getResource("/com/project/coursework2/" + fxmlFile);
+            if (url == null) {
+                System.out.println("FXML not found: " + fxmlFile);
+                return;
             }
+            mainContentArea.getChildren().setAll((Node) FXMLLoader.load(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,6 +107,13 @@ public class SidebarController {
                 BookingsController controller = loader.getController();
                 controller.prefillResourceField(resource);
             }
+    @FXML
+    private void handleLogout() {
+        SessionManager.clear();
+        try {
+            Parent loginView = FXMLLoader.load(getClass().getResource(
+                    "/com/project/coursework2/login-view.fxml"));
+            adminBtn.getScene().setRoot(loginView);
         } catch (IOException e) {
             e.printStackTrace();
         }

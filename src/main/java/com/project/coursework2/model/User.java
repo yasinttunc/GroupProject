@@ -3,6 +3,17 @@ package com.project.coursework2.model;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Domain model representing a system user.
+ * A user has a unique ID, display name, role ({@code Student}, {@code Staff},
+ * or {@code Admin}), email, and a cap on concurrent active bookings.
+ * Booking history is maintained as an in-memory list and is
+ * populated by the data layer on demand.
+ *
+ * @author CRBAS Team
+ * @version 1.0
+ */
 public class User {
 
     private String userID;
@@ -13,9 +24,7 @@ public class User {
     private String role;
     private String password;
     private int maxActiveBookings;
-    private List<String> certifications;
     private List<Booking> bookings;
-    private static int totalUsers;
 
     public User(String id, String firstName, String lastName , String email, String role){
         this.userID = id;
@@ -25,9 +34,9 @@ public class User {
         this.role = role;
         this.password = "";
         maxActiveBookings = 3;
-        this.certifications = new ArrayList<>();
+
         this.bookings = new ArrayList<>();
-        totalUsers++;
+
     }
 
     public User(String id, String name, String firstName, String lastName , String email, String role){
@@ -39,9 +48,9 @@ public class User {
         this.role = role;
         this.password = "";
         maxActiveBookings = 3;
-        this.certifications = new ArrayList<>();
+
         this.bookings = new ArrayList<>();
-        totalUsers++;
+
     }
 
     public boolean requestBooking(){
@@ -78,14 +87,9 @@ public class User {
     public int getMaxActiveBookings() { return maxActiveBookings; }
     public void setMaxActiveBookings(int max) { this.maxActiveBookings = max; }
 
-    public List<String> getCertifications() { return certifications; }
-    public void setCertifications(List<String> certs) { this.certifications = certs; }
-
     public List<Booking> getBookings() { return bookings; }
     public void setBookings(List<Booking> bookings) { this.bookings = bookings; }
 
-    public static int getTotalUsers() { return totalUsers; }
-    public static void setTotalUsers(int total) { totalUsers = total; }
 
 
 }

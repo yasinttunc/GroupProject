@@ -1,5 +1,6 @@
 package com.project.coursework2.controller;
 
+import com.project.coursework2.service.BookingService;
 import com.project.coursework2.data.BookingsDatabaseManager;
 import com.project.coursework2.data.ResourcesDatabaseManager;
 import com.project.coursework2.model.Booking;
@@ -13,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -23,7 +25,19 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * Controller for the Bookings page (bookings-view.fxml).
+ * Allows the logged-in user to browse resources, select a date and time slot,
+ * submit new booking requests, and cancel existing ones.
+ * Performs client-side validation for past dates, role permissions, booking limits,
+ * and time-slot conflicts before writing to the database.
+ *
+ * @author CRBAS Team
+ * @version 1.0
+ */
 public class BookingsController {
 
     @FXML private TextField searchField;
@@ -55,16 +69,7 @@ public class BookingsController {
     // ─── Form setup ───
 
     private void setupForm() {
-        // Block past dates
-        // TODO : Disable occupied dates
-        if (startDatePicker != null) {
-            startDatePicker.setDayCellFactory(p -> new DateCell() {
-                public void updateItem(LocalDate date, boolean empty) {
-                    super.updateItem(date, empty);
-                    setDisable(empty || date.isBefore(LocalDate.now()));
-                }
-            });
-        }
+        updateDatePickerForResource(null);
 
         // Resource dropdown
         if (resourceDropdown != null) {
@@ -72,11 +77,17 @@ public class BookingsController {
                 @Override public String toString(ResourcesDatabaseManager.ResourceRow r) { return r != null ? r.getName() : ""; }
                 @Override public ResourcesDatabaseManager.ResourceRow fromString(String s) { return null; }
             });
-            try { resourceDropdown.getItems().addAll(ResourcesDatabaseManager.getAllResources()); }
+            try {
+                for (ResourcesDatabaseManager.ResourceRow resource : ResourcesDatabaseManager.getAllResources()) {
+                    if (resource.isActive()) {
+                        resourceDropdown.getItems().add(resource);
+                    }
+                }
+            }
             catch (SQLException e) { System.out.println("Could not load resources: " + e.getMessage()); }
 
-            // Re-trigger end time calculation when resource changes
             resourceDropdown.valueProperty().addListener((o, old, val) -> {
+                updateDatePickerForResource(val);
                 if (startTimeCombo != null && startTimeCombo.getValue() != null) {
                     String cur = startTimeCombo.getValue();
                     startTimeCombo.setValue(null);
@@ -126,12 +137,11 @@ public class BookingsController {
     // ─── Table columns ───
 
     private void setupTableColumns() {
-        bookingIDCol.setCellValueFactory(d -> new SimpleStringProperty(safeStr(d.getValue().getBookingID())));
-        resourceNameCol.setCellValueFactory(d -> new SimpleStringProperty(safeStr(d.getValue().getResourceName())));
-        dateCol.setCellValueFactory(d -> new SimpleStringProperty(safeStr(d.getValue().getDate())));
-        timeRangeCol.setCellValueFactory(d -> new SimpleStringProperty(
-                safeStr(d.getValue().getStartTime()) + " - " + safeStr(d.getValue().getEndTime())));
-        statusCol.setCellValueFactory(d -> new SimpleStringProperty(safeStr(d.getValue().getStatus(), "Pending")));
+        bookingIDCol.setCellValueFactory(d -> { Booking r = d.getValue(); return new SimpleStringProperty(r == null ? "" : safeStr(r.getBookingID())); });
+        resourceNameCol.setCellValueFactory(d -> { Booking r = d.getValue(); return new SimpleStringProperty(r == null ? "" : safeStr(r.getResourceName())); });
+        dateCol.setCellValueFactory(d -> { Booking r = d.getValue(); return new SimpleStringProperty(r == null ? "" : safeStr(r.getDate())); });
+        timeRangeCol.setCellValueFactory(d -> { Booking r = d.getValue(); return new SimpleStringProperty(r == null ? "" : safeStr(r.getStartTime()) + " - " + safeStr(r.getEndTime())); });
+        statusCol.setCellValueFactory(d -> { Booking r = d.getValue(); return new SimpleStringProperty(r == null ? "" : safeStr(r.getStatus(), "Pending")); });
 
         // Status pill styling
         statusCol.setCellFactory(col -> new TableCell<>() {
@@ -149,12 +159,12 @@ public class BookingsController {
         // Cancel button
         actionCol.setCellFactory(col -> new TableCell<>() {
             private final Button btn = new Button("Cancel");
-            { btn.setStyle("-fx-background-color: transparent; -fx-border-color: #E6E9ED; -fx-border-radius: 4; -fx-text-fill: #A0A0A0; -fx-cursor: hand;");
-              btn.setOnAction(e -> cancelBooking(getTableView().getItems().get(getIndex()))); }
+            { btn.setStyle("-fx-background-color: transparent; -fx-border-color: #E6E9ED; -fx-border-radius: 4; -fx-text-fill: #A0A0A0; -fx-cursor: hand;"); }
             @Override protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) { setGraphic(null); return; }
                 Booking b = getTableView().getItems().get(getIndex());
+                btn.setOnAction(e -> cancelBooking(b));
                 setGraphic("Cancelled".equalsIgnoreCase(b.getStatus()) ? null : btn);
             }
         });
@@ -206,19 +216,14 @@ public class BookingsController {
             return;
         }
 
-        if (getActiveCount() >= getMaxActive()) {
-            showAlert(Alert.AlertType.WARNING, "You've reached your max of " + getMaxActive() +
-                    " active bookings. Cancel one before creating a new one.");
-            return;
-        }
-
         try {
-            String id = "BKG" + (System.currentTimeMillis() % 10000);
-            BookingsDatabaseManager.addBooking(id, user.getUserID(), res.getResourceId(), date.toString(), start, end);
+            BookingService.createBooking(user, res, date.toString(), start, end);
             loadBookings();
             resourceDropdown.setValue(null); startDatePicker.setValue(null);
             startTimeCombo.setValue(null); endTimeCombo.setValue(null);
             showAlert(Alert.AlertType.INFORMATION, "Booking request submitted successfully.");
+        } catch (IllegalArgumentException ex) {
+            showAlert(Alert.AlertType.WARNING, ex.getMessage());
         } catch (SQLException ex) {
             showAlert(Alert.AlertType.ERROR, "Database error: " + ex.getMessage());
         }
@@ -226,19 +231,44 @@ public class BookingsController {
 
     private void cancelBooking(Booking b) {
         if ("Cancelled".equalsIgnoreCase(b.getStatus())) return;
-        try {
-            BookingsDatabaseManager.updateBookingStatus(b.getBookingID(), "Cancelled");
-            loadBookings();
-        } catch (SQLException ex) {
-            showAlert(Alert.AlertType.ERROR, "Failed to cancel: " + ex.getMessage());
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Cancel booking for " + b.getResourceName() + " on " + b.getDate() + "?");
+        confirm.showAndWait().ifPresent(btn -> {
+            if (btn != ButtonType.OK) return;
+            try {
+                BookingService.cancelBooking(b.getBookingID());
+                loadBookings();
+            } catch (SQLException ex) {
+                showAlert(Alert.AlertType.ERROR, "Failed to cancel: " + ex.getMessage());
+            }
+        });
+    }
+
+    private void updateDatePickerForResource(ResourcesDatabaseManager.ResourceRow resource) {
+        if (startDatePicker == null) return;
+        Set<LocalDate> bookedDates = new HashSet<>();
+        if (resource != null) {
+            try { bookedDates.addAll(BookingsDatabaseManager.getBookedDates(resource.getResourceId())); }
+            catch (SQLException ignored) {}
         }
+        Set<LocalDate> finalBooked = bookedDates;
+        startDatePicker.setDayCellFactory(p -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(LocalDate.now()));
+                if (!empty && finalBooked.contains(date)) {
+                    setStyle("-fx-background-color: #FFE0B2;");
+                    setTooltip(new Tooltip("This resource has bookings on this date"));
+                }
+            }
+        });
     }
 
     // ─── Helpers ───
 
     private long getActiveCount() {
         return masterData.stream()
-                .filter(b -> "Confirmed".equalsIgnoreCase(b.getStatus()) || "Pending".equalsIgnoreCase(b.getStatus()))
+                .filter(BookingService::countsAsActiveBooking)
                 .count();
     }
 

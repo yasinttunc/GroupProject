@@ -8,7 +8,7 @@ public class Equipment extends Resource {
 
     // Constructor
     public Equipment(String resourceId, String resourceName, String equipmentType, int quantity) {
-        super(resourceId, resourceName, ResourceType.AV_EQUIPMENT);
+        super(resourceId, resourceName, ResourceType.EQUIPMENT);
         this.equipmentType = equipmentType;
         this.quantity = quantity;
     }
