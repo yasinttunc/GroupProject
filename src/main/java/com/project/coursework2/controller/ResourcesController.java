@@ -1,13 +1,5 @@
 package com.project.coursework2.controller;
 
-import com.project.coursework2.data.ResourcesDatabaseManager;
-import com.project.coursework2.data.ResourcesDatabaseManager.ResourceRow;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
