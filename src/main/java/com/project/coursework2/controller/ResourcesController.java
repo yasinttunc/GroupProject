@@ -1,5 +1,9 @@
 package com.project.coursework2.controller;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
+import com.project.coursework2.data.ResourcesDatabaseManager;
 import com.project.coursework2.data.ResourcesDatabaseManager.ResourceRow;
 import com.project.coursework2.model.ResourceType;
 import com.project.coursework2.service.ResourceService;
@@ -12,8 +16,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -53,8 +55,10 @@ public class ResourcesController {
             populate(roomsContainer, roomsScrollPane, studyRooms, this::buildStudyRoomCard);
             populate(equipmentContainer, equipmentScrollPane, equipment, this::buildEquipmentCard);
             populate(labsContainer, labsScrollPane, labs, this::buildLabCard);
-        System.out.println("Resources page loaded");
-
+            System.out.println("Resources page loaded");
+        }catch (SQLException e){
+            System.out.println("Error loading resources: " + e.getMessage());
+        }
         /*try {
             List<ResourceRow> studyRooms = ResourceService.getByType(ResourceType.STUDY_ROOM);
             List<ResourceRow> equipment  = ResourceService.getByType(ResourceType.EQUIPMENT);

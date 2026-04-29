@@ -97,7 +97,7 @@ public class SidebarController {
     @FXML
     public void goBookings(ResourceRow resource) {
         collapseAdminMenu();
-        
+
         try {
             if (mainContentArea != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/project/coursework2/bookings-view.fxml"));
@@ -107,6 +107,10 @@ public class SidebarController {
                 BookingsController controller = loader.getController();
                 controller.prefillResourceField(resource);
             }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     private void handleLogout() {
         SessionManager.clear();
