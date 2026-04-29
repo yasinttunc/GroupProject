@@ -184,3 +184,20 @@
 .refuse-btn:hover {
     -fx-background-color: #C9302C;
 }
+
+/* --- Maintenance Window Cards --- */
+.maintenance-card {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E6E9ED #E6E9ED #E6E9ED #E8735A;
+    -fx-border-width: 1 1 1 3;
+    -fx-padding: 10 12;
+}
+.maintenance-card-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2A3F54;
+}
+.maintenance-card-meta {
+    -fx-font-size: 11px;
+    -fx-text-fill: #73879C;
+}

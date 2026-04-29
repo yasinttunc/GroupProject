@@ -6,8 +6,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * Application entry point for the Campus Resource Booking and Administration System (CRBAS).
+ * Bootstraps the JavaFX runtime and loads the login screen as the initial scene.
+ *
+ * @author CRBAS Team
+ * @version 1.0
+ */
 public class HelloApplication extends Application {
 
+    /**
+     * Initialises the primary stage, loads the login view and sets the window title.
+     *
+     * @param stage the primary stage provided by the JavaFX runtime
+     * @throws IOException if the login FXML resource cannot be loaded
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/project/coursework2/login-view.fxml"));

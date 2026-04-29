@@ -1,3 +1,4 @@
+
 package com.project.coursework2.gui;
 
 import javafx.geometry.Insets;
@@ -107,3 +108,4 @@ public class LoginPage {
         primaryStage.show();
     }
 }
+

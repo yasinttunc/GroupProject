@@ -1,8 +1,10 @@
 package com.project.coursework2.controller;
 
+import com.project.coursework2.model.Role;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -27,7 +29,7 @@ public class SidebarController {
     @FXML
     public void initialize() {
         String role = SessionManager.getUserRole();
-        boolean isAdmin = "Admin".equals(role);
+        boolean isAdmin = Role.ADMIN == Role.from(role);
         adminBtn.setVisible(isAdmin);
         adminBtn.setManaged(isAdmin);
         // Submenu starts hidden
@@ -38,12 +40,14 @@ public class SidebarController {
     // ───────────────── Page Loading ─────────────────
 
     private void loadPage(String fxmlFile) {
+        if (mainContentArea == null) return;
         try {
-            if (mainContentArea != null) {
-                Node page = FXMLLoader.load(getClass().getResource(
-                        "/com/project/coursework2/" + fxmlFile));
-                mainContentArea.getChildren().setAll(page);
+            java.net.URL url = getClass().getResource("/com/project/coursework2/" + fxmlFile);
+            if (url == null) {
+                System.out.println("FXML not found: " + fxmlFile);
+                return;
             }
+            mainContentArea.getChildren().setAll((Node) FXMLLoader.load(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,6 +68,12 @@ public class SidebarController {
     }
 
     @FXML
+    private void goLiveAvailability() {
+        collapseAdminMenu();
+        loadPage("LiveAvailability.fxml");
+    }
+
+    @FXML
     private void goResources() {
         collapseAdminMenu();
         loadPage("resources-view.fxml");
@@ -73,6 +83,18 @@ public class SidebarController {
     private void goAccount() {
         collapseAdminMenu();
         loadPage("account-view.fxml");
+    }
+
+    @FXML
+    private void handleLogout() {
+        SessionManager.clear();
+        try {
+            Parent loginView = FXMLLoader.load(getClass().getResource(
+                    "/com/project/coursework2/login-view.fxml"));
+            adminBtn.getScene().setRoot(loginView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // ───────────────── Admin Submenu ─────────────────

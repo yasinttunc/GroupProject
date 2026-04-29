@@ -1,5 +1,14 @@
 package com.project.coursework2.model;
 
+/**
+ * Immutable data-transfer object representing a resource booking.
+ * Maps directly to a row in the {@code Booking} database table.
+ * Status values are {@code pending}, {@code confirmed}, {@code cancelled},
+ * and {@code completed}.
+ *
+ * @author CRBAS Team
+ * @version 1.0
+ */
 public class Booking {
 
     private String bookingID;

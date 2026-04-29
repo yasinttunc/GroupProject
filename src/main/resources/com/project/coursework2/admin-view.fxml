@@ -50,7 +50,7 @@
                         </VBox>
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
                             <Label text="Password" styleClass="stat-label"/>
-                            <TextField fx:id="userPasswordField" styleClass="admin-search"/>
+                            <PasswordField fx:id="userPasswordField" styleClass="admin-search"/>
                         </VBox>
                     </HBox>
                     <HBox spacing="15">
@@ -213,6 +213,16 @@
                 <VBox styleClass="stat-badge">
                     <Label fx:id="resourceCountLabel" text="0" styleClass="stat-number"/>
                     <Label text="Total Resources" styleClass="stat-label"/>
+                </VBox>
+                <Button text="+ Add Maintenance Window" onAction="#handleAddMaintenance"
+                        maxWidth="Infinity"
+                        style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px;"/>
+
+                <!-- Upcoming Maintenance Cards -->
+                <VBox spacing="0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E6E9ED; -fx-border-width: 1;">
+                    <Label text="UPCOMING MAINTENANCE"
+                           style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #73879C; -fx-padding: 10 12; -fx-border-color: transparent transparent #E6E9ED transparent; -fx-border-width: 0 0 1 0; -fx-max-width: Infinity;"/>
+                    <VBox fx:id="maintenanceWindowsContainer" spacing="0"/>
                 </VBox>
             </VBox>
         </HBox>

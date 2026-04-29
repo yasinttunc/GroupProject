@@ -1,7 +1,9 @@
 package com.project.coursework2.controller;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -17,21 +19,28 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * Controller for the admin-view.fxml.
@@ -54,6 +63,7 @@ public class AdminController {
     @FXML private Label userCountLabel;
 
     // ── Resources page ──
+    @FXML private VBox maintenanceWindowsContainer;
     @FXML private TextField resourceSearchField;
     @FXML private TableView<ResourceRow> resourcesTable;
     @FXML private TableColumn<ResourceRow, String> resNameCol;
@@ -126,6 +136,19 @@ public class AdminController {
 
     @FXML
     public void initialize() {
+        if (com.project.coursework2.model.Role.ADMIN != com.project.coursework2.model.Role.from(SessionManager.getUserRole())) {
+            try {
+                javafx.scene.Node home = javafx.fxml.FXMLLoader.load(
+                        getClass().getResource("/com/project/coursework2/home-view.fxml"));
+                if (SidebarController.mainContentArea != null) {
+                    SidebarController.mainContentArea.getChildren().setAll(home);
+                }
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
         userNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         userEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         userRoleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
@@ -156,6 +179,7 @@ public class AdminController {
         loadUsers();
         loadResources();
         loadBookings();
+        loadMaintenanceWindows();
 
         // ── Set up live search ──
         setupUserSearch();
@@ -241,7 +265,7 @@ public class AdminController {
                 userFirstNameField.setText(newSel.getFirstName() != null ? newSel.getFirstName() : "");
                 userLastNameField.setText(newSel.getLastName() != null ? newSel.getLastName() : "");
                 userEmailField.setText(newSel.getEmail() != null ? newSel.getEmail() : "");
-                userPasswordField.setText(newSel.getPassword()!= null ? newSel.getPassword() : ""); // Keep blank by default
+                userPasswordField.clear(); // never show stored password
                 userRoleCombo.setValue(newSel.getRole());
                 userIdField.setText(newSel.getUserID() != null ? newSel.getUserID() : "");
 
@@ -321,15 +345,19 @@ public class AdminController {
         String role = userRoleCombo.getValue();
         String userId = userIdField.getText();
 
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || role == null || userId.isEmpty()) {
-            showAlert("Error", "Please fill in all fields");
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || role == null || userId.isEmpty()) {
+            showAlert("Error", "Please fill in all required fields.");
             return;
         }
         try {
-            AdminManager.updateUser(userId, firstName, lastName, email, password, role);
+            if (password.isEmpty()) {
+                AdminManager.updateUserNoPassword(userId, firstName, lastName, email, role);
+            } else {
+                AdminManager.updateUser(userId, firstName, lastName, email, password, role);
+            }
             loadUsers();
             clearUserForm();
-            showAlert("Success", "User updated successfully");
+            showAlert("Success", "User updated successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Error", "Could not update user: " + e.getMessage());
@@ -337,15 +365,22 @@ public class AdminController {
     }
     @FXML public void handleDeleteUser() {
         String userID = userIdField.getText();
-        if (userID.isEmpty()) {
-            
-            try {
-                AdminManager.deleteUser(userID);
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-                showAlert("Error", "Could not delete user: " + e.getMessage());
-            }
+        if (userID == null || userID.isEmpty()) {
+            showAlert("Error", "Please select a user to delete.");
+            return;
+        }
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Delete user " + userID + "? This cannot be undone.");
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) return;
+        try {
+            AdminManager.deleteUser(userID);
+            loadUsers();
+            clearUserForm();
+            showAlert("Success", "User deleted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "Could not delete user: " + e.getMessage());
         }
     }
 
@@ -357,6 +392,12 @@ public class AdminController {
         String email = userEmailField.getText();
         String password = userPasswordField.getText();
         String role = userRoleCombo.getValue();
+
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || role == null) {
+            showAlert("Error", "Please fill in all required fields including role.");
+            return;
+        }
+
         try{
             String generatedID = AdminManager.addUser(firstName,lastName,email,password,role,createdDate,createdTime);
             switch (role) {
@@ -401,8 +442,178 @@ public class AdminController {
             showAlert("Error", "Could not add user: " + e.getMessage());
         }
     }
-// TODO
-    @FXML public void handleSaveResource() {}
+    @FXML
+    public void handleAddMaintenance() {
+        Stage popup = new Stage();
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Add Maintenance Window");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(12);
+        grid.setPadding(new Insets(20));
+
+        ComboBox<String> resourceIdBox = new ComboBox<>();
+
+        try {
+            ResourcesDatabaseManager.getAllResources()
+                    .forEach(r -> resourceIdBox.getItems().add(r.getResourceId() + " – " + r.getName()));
+        } catch (Exception e) {
+            System.out.println("Could not load resources: " + e.getMessage());
+        }
+
+        resourceIdBox.setPromptText("Select resource");
+        resourceIdBox.setPrefWidth(220);
+
+        DatePicker startDate = new DatePicker();
+        startDate.setPromptText("Start date");
+
+        ComboBox<String> startTime = new ComboBox<>();
+        startTime.setPromptText("Start time");
+        startTime.setPrefWidth(220);
+
+        DatePicker endDate = new DatePicker();
+        endDate.setPromptText("End date");
+
+        ComboBox<String> endTime = new ComboBox<>();
+        endTime.setPromptText("End time");
+        endTime.setPrefWidth(220);
+
+        for (int h = 0; h < 24; h++) {
+            startTime.getItems().add(String.format("%02d:00", h));
+            startTime.getItems().add(String.format("%02d:30", h));
+            endTime.getItems().add(String.format("%02d:00", h));
+            endTime.getItems().add(String.format("%02d:30", h));
+        }
+
+        TextField reasonField = new TextField();
+        reasonField.setPromptText("Reason");
+
+        grid.add(new Label("Resource:"), 0, 0);
+        grid.add(resourceIdBox, 1, 0);
+
+        grid.add(new Label("Start date:"), 0, 1);
+        grid.add(startDate, 1, 1);
+
+        grid.add(new Label("Start time:"), 0, 2);
+        grid.add(startTime, 1, 2);
+
+        grid.add(new Label("End date:"), 0, 3);
+        grid.add(endDate, 1, 3);
+
+        grid.add(new Label("End time:"), 0, 4);
+        grid.add(endTime, 1, 4);
+
+        grid.add(new Label("Reason:"), 0, 5);
+        grid.add(reasonField, 1, 5);
+
+        Button saveBtn = new Button("Save");
+        saveBtn.setStyle("-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 6;");
+
+        saveBtn.setOnAction(e -> {
+            String selected = resourceIdBox.getValue();
+
+            if (selected == null || startDate.getValue() == null || endDate.getValue() == null
+                    || startTime.getValue() == null || endTime.getValue() == null) {
+                showAlert("Error", "Please fill in all required fields.");
+                return;
+            }
+
+            LocalDateTime maintenanceStart = LocalDateTime.of(
+                    startDate.getValue(),
+                    LocalTime.parse(startTime.getValue())
+            );
+
+            LocalDateTime maintenanceEnd = LocalDateTime.of(
+                    endDate.getValue(),
+                    LocalTime.parse(endTime.getValue())
+            );
+
+            if (!maintenanceStart.isBefore(maintenanceEnd)) {
+                showAlert("Error", "End date/time must be after start date/time.");
+                return;
+            }
+
+            String[] parts = selected.split(" – ");
+            if (parts.length < 2) {
+                showAlert("Error", "Could not read resource selection. Please try again.");
+                return;
+            }
+            String resourceId = parts[0];
+
+            try {
+                AdminManager.addMaintenanceWindow(
+                        resourceId,
+                        startDate.getValue().toString(),
+                        startTime.getValue(),
+                        endDate.getValue().toString(),
+                        endTime.getValue(),
+                        reasonField.getText().trim()
+                );
+
+                AdminManager.updateResourceStatusMaintenance(
+                        resourceId,
+                        "Maintenance",
+                        startDate.getValue().toString(),
+                        startTime.getValue(),
+                        endDate.getValue().toString(),
+                        endTime.getValue()
+                );
+                resourcesTable.refresh();
+                loadMaintenanceWindows();
+                popup.close();
+            } catch (Exception ex) {
+                showAlert("Error", "Failed to save: " + ex.getMessage());
+            }
+        });
+
+        Button cancelBtn = new Button("Cancel");
+        cancelBtn.setOnAction(e -> popup.close());
+
+        HBox buttons = new HBox(10, saveBtn, cancelBtn);
+        buttons.setPadding(new Insets(10, 0, 0, 0));
+
+        grid.add(buttons, 1, 6);
+
+        popup.setScene(new Scene(grid));
+        popup.showAndWait();
+    }
+
+
+
+
+    // TODO
+    @FXML public void handleSaveResource() {
+        String resourceID = resIdField.getText();
+        if (resourceID == null || resourceID.isEmpty()) {
+            showAlert("Error", "Please select a resource to edit.");
+            return;
+        }
+        String name = resNameField.getText();
+        String type = (resTypeCombo != null) ? resTypeCombo.getValue() : null;
+        String building = resBuildingField.getText();
+        String room = resRoomField.getText();
+        String activeSelection = resActiveCombo.getValue();
+        boolean isActive = "Yes".equals(activeSelection);
+        String requiredRole = resRoleCombo.getValue();
+        String durationText = resMaxDurationField != null ? resMaxDurationField.getText() : "";
+        int duration = 120;
+        if (!durationText.isEmpty()) {
+            try { duration = Integer.parseInt(durationText); } catch (NumberFormatException ignored) {}
+        }
+
+        try{
+            AdminManager.updateResource(resourceID,name,type,requiredRole,duration,building,room,isActive);
+            loadResources();
+            clearResourceForm();
+            showAlert("Success", "Resource updated successfully.");
+        }
+        catch (java.sql.SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "Could not update the resource: " + e.getMessage());
+        }
+
+    }
 
     @FXML public void handleDeleteResource() {
         String resourceID = resIdField.getText();
@@ -410,20 +621,93 @@ public class AdminController {
             showAlert("Error", "Please select a resource to delete.");
             return;
         }
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Delete resource " + resourceID + "? All active bookings for it will be cancelled.");
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) return;
         try {
+            AdminManager.cancelActiveBookingsByResource(resourceID);
             AdminManager.deleteResource(resourceID);
             loadResources();
             clearResourceForm();
-            showAlert("Success", "Resource deleted successfully.");
+            showAlert("Success", "Resource deleted and active bookings cancelled.");
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
             showAlert("Error", "Could not delete resource: " + e.getMessage());
         }
     }
 
-// TODO
-    @FXML public void handleSaveBooking() {}
-    @FXML public void handleDeleteBooking() {}
+    @FXML public void handleSaveBooking() {
+        String bookingID    = bookIdField.getText();
+        String bookDate     = bookDateField.getText();
+        String bookStatus   = bookStatusCombo.getValue();
+        String bookStartTime = bookStartTimeField.getText().trim();
+        String bookEndTime   = bookEndTimeField.getText().trim();
+
+        if (bookingID == null || bookingID.isEmpty()) {
+            showAlert("Error", "Please select a booking to edit.");
+            return;
+        }
+        if (bookDate == null || bookDate.isEmpty() || bookStatus == null) {
+            showAlert("Error", "Please fill in date and status.");
+            return;
+        }
+        if (!bookStartTime.matches("([01]\\d|2[0-3]):[0-5]\\d") ||
+            !bookEndTime.matches("([01]\\d|2[0-3]):[0-5]\\d")) {
+            showAlert("Error", "Times must be in HH:mm format (e.g. 09:00).");
+            return;
+        }
+        try {
+            LocalDate.parse(bookDate);
+        } catch (Exception e) {
+            showAlert("Error", "Date must be in YYYY-MM-DD format.");
+            return;
+        }
+        if (!LocalTime.parse(bookStartTime).isBefore(LocalTime.parse(bookEndTime))) {
+            showAlert("Error", "End time must be after start time.");
+            return;
+        }
+        if ("pending".equalsIgnoreCase(bookStatus) || "confirmed".equalsIgnoreCase(bookStatus)) {
+            try {
+                if (BookingsDatabaseManager.hasBookingConflictExcluding(
+                        bookingID, bookResIdField.getText(), bookDate, bookStartTime, bookEndTime)) {
+                    showAlert("Error", "This resource already has a booking at that time.");
+                    return;
+                }
+            } catch (java.sql.SQLException e) {
+                showAlert("Error", "Could not check booking conflict: " + e.getMessage());
+                return;
+            }
+        }
+        String updatedDate = LocalDate.now().toString();
+        String updatedTime = LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        try {
+            AdminManager.updateBooking(bookingID, bookDate, bookStatus, bookStartTime, bookEndTime, updatedDate, updatedTime);
+            loadBookings();
+            clearBookingForm();
+            showAlert("Success", "Booking updated successfully.");
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "Could not update booking: " + e.getMessage());
+        }
+    }
+    @FXML public void handleDeleteBooking() {
+        String bookingID= bookIdField.getText();
+        if (bookingID == null || bookingID.isEmpty()) {
+            showAlert("Error", "Please select a booking to delete.");
+            return;
+        }
+        try {
+            AdminManager.deleteBooking(bookingID);
+            loadBookings();
+            clearBookingForm();
+            showAlert("Success", "Booking deleted successfully.");
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "Could not delete booking: " + e.getMessage());
+        }
+    }
 
 
     @FXML public void handleAddResource() {
@@ -457,10 +741,12 @@ public class AdminController {
         }
     }
 
+
+
     // ═══════════════════════════ Data Loading ═════════════════════════════════
 
     /**
-     * Loads all users from the database into the Users table.
+     * Loads all users from the database into the Users twhable.
      */
     private void loadUsers() {
         try {
@@ -651,10 +937,70 @@ public class AdminController {
          try {
             AdminManager.updateBookingStatus(booking.getBookingID(), "cancelled");
             loadBookings();
-            showAlert("Success", "Booking accepted successfully.");
+            showAlert("Success", "Booking refused successfully.");
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
-            showAlert("Error", "Could not accept booking: " + e.getMessage());
+            showAlert("Error", "Could not refuse booking: " + e.getMessage());
+        }
+    }
+
+    // ═══════════════════════ Maintenance Windows ══════════════════════════════
+
+    private void loadMaintenanceWindows() {
+        if (maintenanceWindowsContainer == null) return;
+        maintenanceWindowsContainer.getChildren().clear();
+
+        String query = "SELECT r.name, m.startDate, m.startTime, m.endDate, m.endTime, m.reason " +
+                "FROM MaintenanceWindow m JOIN Resource r ON m.resourceID = r.resourceID " +
+                "WHERE datetime(m.endDate || ' ' || m.endTime) >= datetime('now') " +
+                "ORDER BY m.startDate ASC, m.startTime ASC";
+
+        try (java.sql.Connection conn = com.project.coursework2.data.DatabaseConnection.getConnection();
+             java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+             java.sql.ResultSet rs = stmt.executeQuery()) {
+
+            boolean found = false;
+            while (rs.next()) {
+                found = true;
+
+                VBox card = new VBox(3);
+                card.getStyleClass().add("maintenance-card");
+
+                Label nameLabel = new Label(rs.getString("name"));
+                nameLabel.getStyleClass().add("maintenance-card-title");
+
+                Label timeLabel = new Label(
+                        rs.getString("startDate") + "  " + rs.getString("startTime")
+                        + "  —  " + rs.getString("endDate") + "  " + rs.getString("endTime"));
+                timeLabel.getStyleClass().add("maintenance-card-meta");
+
+                card.getChildren().addAll(nameLabel, timeLabel);
+
+                String reason = rs.getString("reason");
+                if (reason != null && !reason.isBlank()) {
+                    Label reasonLabel = new Label(reason);
+                    reasonLabel.setWrapText(true);
+                    reasonLabel.getStyleClass().add("maintenance-card-meta");
+                    card.getChildren().add(reasonLabel);
+                }
+
+                // Bottom divider between cards
+                Region divider = new Region();
+                divider.setStyle("-fx-background-color: #E6E9ED;");
+                divider.setPrefHeight(1);
+
+                maintenanceWindowsContainer.getChildren().addAll(card, divider);
+            }
+
+            if (!found) {
+                Label empty = new Label("No upcoming maintenance scheduled");
+                empty.setStyle("-fx-font-size: 11px; -fx-text-fill: #73879C; -fx-padding: 10 12;");
+                maintenanceWindowsContainer.getChildren().add(empty);
+            }
+        } catch (Exception e) {
+            Label err = new Label("Could not load maintenance");
+            err.setStyle("-fx-font-size: 11px; -fx-text-fill: #73879C; -fx-padding: 10 12;");
+            maintenanceWindowsContainer.getChildren().add(err);
         }
     }
 
