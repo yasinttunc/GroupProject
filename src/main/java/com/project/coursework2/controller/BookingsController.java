@@ -5,6 +5,8 @@ import com.project.coursework2.data.BookingsDatabaseManager;
 import com.project.coursework2.data.ResourcesDatabaseManager;
 import com.project.coursework2.model.Booking;
 import com.project.coursework2.model.User;
+
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -117,6 +119,18 @@ public class BookingsController {
         // Live search
         if (searchField != null) {
             searchField.textProperty().addListener((o, old, val) -> filterBookings(val));
+        }
+    }
+
+    // Finds the corresponding resource entry in the drop down and sets it
+    public void prefillResourceField(ResourcesDatabaseManager.ResourceRow resource) {
+        if (resource == null || resourceDropdown == null) { return; }
+
+        for (ResourcesDatabaseManager.ResourceRow item : resourceDropdown.getItems()) {
+            if (item.getResourceId().equals(resource.getResourceId())) {
+                resourceDropdown.setValue(item);
+                break;
+            } 
         }
     }
 
