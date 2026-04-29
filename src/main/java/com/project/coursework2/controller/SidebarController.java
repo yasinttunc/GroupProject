@@ -200,4 +200,5 @@ public class SidebarController {
         adminResourcesBtn.getStyleClass().remove("sidebar-sub-active");
         adminBookingsBtn.getStyleClass().remove("sidebar-sub-active");
     }
+
 }
