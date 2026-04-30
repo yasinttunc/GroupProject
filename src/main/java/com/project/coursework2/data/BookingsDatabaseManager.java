@@ -20,7 +20,7 @@ import com.project.coursework2.model.Booking;
  * Provides methods for retrieving, creating, updating, and conflict-checking bookings.
  * All queries use parameterised {@link java.sql.PreparedStatement}s to prevent SQL injection.
  *
- * @author CRBAS Team
+ * @author Group 2
  * @version 1.0
  */
 public class BookingsDatabaseManager {
@@ -59,9 +59,6 @@ public class BookingsDatabaseManager {
         return bookings;
     }
 
-    /**
-     * Returns only the bookings that belong to the current user.
-     */
     /**
      * Returns all bookings belonging to a specific user, ordered by date descending.
      *
@@ -112,6 +109,13 @@ public class BookingsDatabaseManager {
         return getRoleLevel(userRole) >= getRoleLevel(requiredRole);
     }
 
+    /**
+     * Maps a role name to a numeric permission level used for access comparisons.
+     * Student = 1, Staff = 2, Admin = 3. Unknown or null roles return 0.
+     *
+     * @param role the role string to convert
+     * @return the numeric permission level
+     */
     private static int getRoleLevel(String role) {
         if (role == null) {
             return 0;
@@ -141,6 +145,19 @@ public class BookingsDatabaseManager {
         return hasBookingConflictExcluding(null, resourceID, date, startTime, endTime);
     }
 
+    /**
+     * Same as {@link #hasBookingConflict} but ignores one specific booking.
+     * Used when editing an existing booking so it does not conflict with itself.
+     * Two bookings overlap when one starts before the other ends and ends after the other starts.
+     *
+     * @param bookingID  the booking ID to exclude from the check, or {@code null} to exclude nothing
+     * @param resourceID the resource to check
+     * @param date       the booking date (YYYY-MM-DD)
+     * @param startTime  proposed start time (HH:mm)
+     * @param endTime    proposed end time (HH:mm)
+     * @return {@code true} if a conflicting booking exists
+     * @throws SQLException on database access error
+     */
     public static boolean hasBookingConflictExcluding(String bookingID, String resourceID, String date,
                                                       String startTime, String endTime) throws SQLException {
         String query = "SELECT COUNT(*) FROM Booking " +
@@ -171,6 +188,18 @@ public class BookingsDatabaseManager {
         }
     }
 
+    /**
+     * Checks whether the requested time slot falls inside a maintenance window for the resource.
+     * A maintenance conflict occurs when the maintenance window overlaps with the booking
+     * (maintenance starts before the booking ends AND maintenance ends after the booking starts).
+     *
+     * @param resourceID the resource to check
+     * @param date       the booking date (YYYY-MM-DD)
+     * @param startTime  proposed start time (HH:mm)
+     * @param endTime    proposed end time (HH:mm)
+     * @return {@code true} if the slot is inside a maintenance window
+     * @throws SQLException on database access error
+     */
     public static boolean hasMaintenanceConflict(String resourceID, String date,
                                                  String startTime, String endTime) throws SQLException {
         String query = "SELECT COUNT(*) FROM MaintenanceWindow " +
@@ -219,6 +248,44 @@ public class BookingsDatabaseManager {
             stmt.setString(6, endTime);
             stmt.setString(7, LocalDate.now().toString());
             stmt.setString(8, LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Updates the selected resource, date and time for an existing booking.
+     *
+     * @param bookingID the booking to update
+     * @param resourceID the new resource ID
+     * @param date the new booking date
+     * @param startTime the new start time
+     * @param endTime the new end time
+     * @throws SQLException if the database has a problem
+     */
+    /**
+     * Updates the resource, date, and time of an existing booking and resets its status
+     * to {@code pending} so that an admin must re-approve the change before it is confirmed.
+     *
+     * @param bookingID  the booking to update
+     * @param resourceID the new resource ID
+     * @param date       the new booking date (YYYY-MM-DD)
+     * @param startTime  the new start time (HH:mm)
+     * @param endTime    the new end time (HH:mm)
+     * @throws SQLException on database access error
+     */
+    public static void updateBookingDetails(String bookingID, String resourceID,
+                                            String date, String startTime, String endTime) throws SQLException {
+        String query = "UPDATE Booking SET resourceID = ?, date = ?, startTime = ?, endTime = ?, " +
+                "status = 'pending', updatedDate = ?, updatedTime = ? WHERE bookingID = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, resourceID);
+            stmt.setString(2, date);
+            stmt.setString(3, startTime);
+            stmt.setString(4, endTime);
+            stmt.setString(5, LocalDate.now().toString());
+            stmt.setString(6, LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
+            stmt.setString(7, bookingID);
             stmt.executeUpdate();
         }
     }

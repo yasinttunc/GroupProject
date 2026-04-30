@@ -1,11 +1,11 @@
 package com.project.coursework2.controller;
 
 import java.sql.SQLException;
-import java.util.Optional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import com.project.coursework2.data.AdminManager;
 import com.project.coursework2.data.BookingsDatabaseManager;
@@ -39,7 +39,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -110,6 +109,7 @@ public class AdminController {
     @FXML private TextField adminLevelField;
 
     @FXML private TextField resNameField;
+    @FXML private TextField resOpeningHoursField;
     @FXML private ComboBox<String> resTypeCombo;
     @FXML private ComboBox<String> resRoleCombo;
     @FXML private TextField resMaxDurationField;
@@ -217,6 +217,15 @@ public class AdminController {
 
     // ═══════════════════════════ Page Switching ═══════════════════════════════
 
+    /** Called by SidebarController to switch tabs without re-running initialize(). */
+    public void switchTab(String tab) {
+        switch (tab) {
+            case "resources" -> showPage(resourcesPane);
+            case "bookings"  -> showPage(bookingsPane);
+            default          -> showPage(usersPane);
+        }
+    }
+
     /**
      * Shows the given page node and hides all others.
      */
@@ -231,6 +240,11 @@ public class AdminController {
 
     // ═══════════════════════════ Dynamic Fields Logic ═════════════════════════
 
+    /**
+     * Shows the role-specific input fields (Student / Staff / Admin) and hides the others.
+     *
+     * @param role the selected role string, or null to hide all dynamic fields
+     */
     private void updateDynamicFieldsVisibility(String role) {
         studentFieldsBox.setManaged(false);
         studentFieldsBox.setVisible(false);
@@ -259,6 +273,10 @@ public class AdminController {
 
     // ═══════════════════════════ Table Listeners ══════════════════════════════
 
+    /**
+     * Attaches selection listeners to the three tables.
+     * When a row is selected its data is copied into the corresponding edit form fields.
+     */
     private void setupTableListeners() {
         usersTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {
@@ -284,10 +302,12 @@ public class AdminController {
                 resIdField.setText(newSel.getResourceId() != null ? newSel.getResourceId() : "");
                 if (resRoleCombo != null) resRoleCombo.setValue(newSel.getRequiredRole() != null ? newSel.getRequiredRole() : "");
                 if (resMaxDurationField != null) resMaxDurationField.setText(String.valueOf(newSel.getMaxBookingDuration()));
+                if (resOpeningHoursField != null) resOpeningHoursField.setText(newSel.getOpeningHours() != null ? newSel.getOpeningHours() : "");
             } else {
                 resNameField.clear(); if (resTypeCombo != null) resTypeCombo.setValue(null); resBuildingField.clear(); resRoomField.clear(); resActiveCombo.setValue(null); resIdField.clear();
                 if (resRoleCombo != null) resRoleCombo.setValue(null);
                 if (resMaxDurationField != null) resMaxDurationField.clear();
+                if (resOpeningHoursField != null) resOpeningHoursField.clear();
             }
         });
 
@@ -308,6 +328,7 @@ public class AdminController {
 
     // ═══════════════════════════ Utility Methods ══════════════════════════════
 
+    /** Clears all fields in the user edit form. */
     private void clearUserForm() {
         userFirstNameField.clear(); userLastNameField.clear(); userEmailField.clear(); userPasswordField.clear(); userRoleCombo.setValue(null); userIdField.clear();
         if (studentYearField != null) studentYearField.clear();
@@ -318,17 +339,26 @@ public class AdminController {
         if (adminLevelField != null) adminLevelField.clear();
     }
 
+    /** Clears all fields in the resource edit form. */
     private void clearResourceForm() {
         resNameField.clear(); if (resTypeCombo != null) resTypeCombo.setValue(null); resBuildingField.clear(); resRoomField.clear(); resActiveCombo.setValue(null); resIdField.clear();
         if (resRoleCombo != null) resRoleCombo.setValue(null);
         if (resMaxDurationField != null) resMaxDurationField.clear();
+        if (resOpeningHoursField != null) resOpeningHoursField.clear();
     }
 
+    /** Clears all fields in the booking edit form. */
     private void clearBookingForm() {
         bookDateField.clear(); bookStartTimeField.clear(); bookEndTimeField.clear(); bookStatusCombo.setValue(null); bookIdField.clear(); bookUserIdField.clear(); bookResIdField.clear();
     }
 
-     private void showAlert(String title, String content) {
+     /**
+     * Shows a simple information alert dialog.
+     *
+     * @param title   the dialog window title
+     * @param content the message to display
+     */
+    private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -445,7 +475,6 @@ public class AdminController {
     @FXML
     public void handleAddMaintenance() {
         Stage popup = new Stage();
-        popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Add Maintenance Window");
 
         GridPane grid = new GridPane();
@@ -455,11 +484,8 @@ public class AdminController {
 
         ComboBox<String> resourceIdBox = new ComboBox<>();
 
-        try {
-            ResourcesDatabaseManager.getAllResources()
-                    .forEach(r -> resourceIdBox.getItems().add(r.getResourceId() + " – " + r.getName()));
-        } catch (Exception e) {
-            System.out.println("Could not load resources: " + e.getMessage());
+        if (masterResourceList != null) {
+            masterResourceList.forEach(r -> resourceIdBox.getItems().add(r.getResourceId() + " – " + r.getName()));
         }
 
         resourceIdBox.setPromptText("Select resource");
@@ -508,7 +534,7 @@ public class AdminController {
         grid.add(reasonField, 1, 5);
 
         Button saveBtn = new Button("Save");
-        saveBtn.setStyle("-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 6;");
+        saveBtn.setStyle("-fx-background-color: #8A7AE6; -fx-text-fill: white; -fx-background-radius: 8;");
 
         saveBtn.setOnAction(e -> {
             String selected = resourceIdBox.getValue();
@@ -540,27 +566,44 @@ public class AdminController {
                 return;
             }
             String resourceId = parts[0];
+            String startDateValue = startDate.getValue().toString();
+            String startTimeValue = startTime.getValue();
+            String endDateValue = endDate.getValue().toString();
+            String endTimeValue = endTime.getValue();
+            String reason = reasonField.getText() != null ? reasonField.getText().trim() : "";
 
             try {
                 AdminManager.addMaintenanceWindow(
-                        resourceId,
-                        startDate.getValue().toString(),
-                        startTime.getValue(),
-                        endDate.getValue().toString(),
-                        endTime.getValue(),
-                        reasonField.getText().trim()
-                );
+                        resourceId, startDateValue, startTimeValue, endDateValue, endTimeValue, reason);
+                AdminManager.cancelBookingsForMaintenanceWindow(
+                        resourceId, startDateValue, startTimeValue, endDateValue, endTimeValue);
 
-                AdminManager.updateResourceStatusMaintenance(
-                        resourceId,
-                        "Maintenance",
-                        startDate.getValue().toString(),
-                        startTime.getValue(),
-                        endDate.getValue().toString(),
-                        endTime.getValue()
-                );
-                resourcesTable.refresh();
-                loadMaintenanceWindows();
+                // Remove "no maintenance" placeholder if present
+                maintenanceWindowsContainer.getChildren().removeIf(
+                        node -> node instanceof Label lbl
+                                && "No upcoming maintenance scheduled".equals(lbl.getText()));
+
+                // Append new card directly — no DB reload needed
+                String resourceName = parts.length > 1 ? parts[1] : resourceId;
+                VBox card = new VBox(3);
+                card.getStyleClass().add("maintenance-card");
+                Label nameLabel = new Label(resourceName);
+                nameLabel.getStyleClass().add("maintenance-card-title");
+                Label timeLabel = new Label(
+                        startDateValue + "  " + startTimeValue + "  —  " + endDateValue + "  " + endTimeValue);
+                timeLabel.getStyleClass().add("maintenance-card-meta");
+                card.getChildren().addAll(nameLabel, timeLabel);
+                if (!reason.isBlank()) {
+                    Label reasonLabel = new Label(reason);
+                    reasonLabel.setWrapText(true);
+                    reasonLabel.getStyleClass().add("maintenance-card-meta");
+                    card.getChildren().add(reasonLabel);
+                }
+                Region divider = new Region();
+                divider.setStyle("-fx-background-color: #DDE3EE;");
+                divider.setPrefHeight(1);
+                maintenanceWindowsContainer.getChildren().addAll(card, divider);
+
                 popup.close();
             } catch (Exception ex) {
                 showAlert("Error", "Failed to save: " + ex.getMessage());
@@ -575,8 +618,9 @@ public class AdminController {
 
         grid.add(buttons, 1, 6);
 
-        popup.setScene(new Scene(grid));
-        popup.showAndWait();
+        popup.setScene(new Scene(grid, 380, 340));
+        popup.setResizable(false);
+        popup.show();
     }
 
 
@@ -602,8 +646,10 @@ public class AdminController {
             try { duration = Integer.parseInt(durationText); } catch (NumberFormatException ignored) {}
         }
 
+        String openingHours = resOpeningHoursField != null ? resOpeningHoursField.getText().trim() : "";
+
         try{
-            AdminManager.updateResource(resourceID,name,type,requiredRole,duration,building,room,isActive);
+            AdminManager.updateResource(resourceID,name,type,requiredRole,duration,building,room,isActive,openingHours);
             loadResources();
             clearResourceForm();
             showAlert("Success", "Resource updated successfully.");
@@ -730,8 +776,10 @@ public class AdminController {
             return;
         }
 
+        String openingHours = resOpeningHoursField != null ? resOpeningHoursField.getText().trim() : "08:00 - 18:00";
+
         try {
-            AdminManager.addResource(name, type, requiredRole, duration, building, room, isActive);
+            AdminManager.addResource(name, type, requiredRole, duration, building, room, isActive, openingHours);
             loadResources();
             clearResourceForm();
             showAlert("Success", "Resource successfully added.");
@@ -746,7 +794,7 @@ public class AdminController {
     // ═══════════════════════════ Data Loading ═════════════════════════════════
 
     /**
-     * Loads all users from the database into the Users twhable.
+     * Loads all users from the database into the Users table.
      */
     private void loadUsers() {
         try {
@@ -761,7 +809,8 @@ public class AdminController {
     }
 
     /**
-     * Loads all resources from the database into the Resources table.
+     * Loads all resources from the database into the Resources table
+     * and refreshes the {@code masterResourceList} used for live search.
      */
     private void loadResources() {
         try {
@@ -775,6 +824,10 @@ public class AdminController {
         }
     }
 
+    /**
+     * Loads all bookings, splits them into pending and history lists,
+     * updates the stat labels, builds the pending cards, and fills the history table.
+     */
     private void loadBookings() {
         try {
             ArrayList<Booking> allBookings = BookingsDatabaseManager.getAllBookings();
@@ -808,6 +861,10 @@ public class AdminController {
 
     // ═══════════════════════════ Search Filtering ═════════════════════════════
 
+    /**
+     * Wires the user search field to a {@code FilteredList} so the table updates live as the user types.
+     * Matches on name, first name, last name, email, and role.
+     */
     private void setupUserSearch() {
         if (masterUserList == null) return;
 
@@ -834,6 +891,10 @@ public class AdminController {
     }
 
 
+    /**
+     * Wires the resource search field to a {@code FilteredList}.
+     * Matches on name, type, building, and room.
+     */
     private void setupResourceSearch() {
         if (masterResourceList == null) return;
 
@@ -859,6 +920,12 @@ public class AdminController {
 
     // ═══════════════════════════ Pending Cards ════════════════════════════════
 
+    /**
+     * Clears and rebuilds the pending bookings section with one card per booking.
+     * Each card shows resource name, booking ID, user, date/time, and Accept/Refuse buttons.
+     *
+     * @param pendingBookings list of bookings with status "pending"
+     */
     private void buildPendingCards(ArrayList<Booking> pendingBookings) {
         pendingRequestsContainer.getChildren().clear();
 
@@ -878,13 +945,13 @@ public class AdminController {
             VBox info = new VBox(2);
             
             Label title = new Label(booking.getResourceName());
-            title.setStyle("-fx-font-weight: bold; -fx-text-fill: #2A3F54; -fx-font-size: 14px;");
+            title.setStyle("-fx-font-weight: bold; -fx-text-fill: #243044; -fx-font-size: 14px;");
             
             Label subtitle1 = new Label("ID: " + booking.getBookingID() + " | User: " + booking.getUserID());
-            subtitle1.setStyle("-fx-text-fill: #73879C; -fx-font-size: 12px;");
+            subtitle1.setStyle("-fx-text-fill: #687385; -fx-font-size: 12px;");
             
             Label subtitle2 = new Label(booking.getDate() + " | " + booking.getStartTime() + " - " + booking.getEndTime());
-            subtitle2.setStyle("-fx-text-fill: #73879C; -fx-font-size: 12px;");
+            subtitle2.setStyle("-fx-text-fill: #687385; -fx-font-size: 12px;");
             
             info.getChildren().addAll(title, subtitle1, subtitle2);
 
@@ -932,7 +999,7 @@ public class AdminController {
      * @param booking the booking to refuse
      */
     private void handleRefuseBooking(Booking booking) {
-        // TODO: update booking status to 'cancelled' in the database
+        // TODO: send notification to user that their booking was refused
         System.out.println("Refused booking: " + booking.getBookingID());
          try {
             AdminManager.updateBookingStatus(booking.getBookingID(), "cancelled");
@@ -984,9 +1051,8 @@ public class AdminController {
                     card.getChildren().add(reasonLabel);
                 }
 
-                // Bottom divider between cards
                 Region divider = new Region();
-                divider.setStyle("-fx-background-color: #E6E9ED;");
+                divider.setStyle("-fx-background-color: #DDE3EE;");
                 divider.setPrefHeight(1);
 
                 maintenanceWindowsContainer.getChildren().addAll(card, divider);
@@ -994,13 +1060,14 @@ public class AdminController {
 
             if (!found) {
                 Label empty = new Label("No upcoming maintenance scheduled");
-                empty.setStyle("-fx-font-size: 11px; -fx-text-fill: #73879C; -fx-padding: 10 12;");
+                empty.setStyle("-fx-font-size: 11px; -fx-text-fill: #687385; -fx-padding: 10 12;");
                 maintenanceWindowsContainer.getChildren().add(empty);
             }
         } catch (Exception e) {
             Label err = new Label("Could not load maintenance");
-            err.setStyle("-fx-font-size: 11px; -fx-text-fill: #73879C; -fx-padding: 10 12;");
+            err.setStyle("-fx-font-size: 11px; -fx-text-fill: #687385; -fx-padding: 10 12;");
             maintenanceWindowsContainer.getChildren().add(err);
+            System.out.println("Maintenance load error: " + e.getMessage());
         }
     }
 

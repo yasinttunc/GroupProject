@@ -1,6 +1,7 @@
 package com.project.coursework2;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,7 +11,7 @@ import java.io.IOException;
  * Application entry point for the Campus Resource Booking and Administration System (CRBAS).
  * Bootstraps the JavaFX runtime and loads the login screen as the initial scene.
  *
- * @author CRBAS Team
+ * @author Group 2
  * @version 1.0
  */
 public class HelloApplication extends Application {
@@ -27,6 +28,20 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         stage.setTitle("CRBAS - Campus Resource Booking System");
         stage.setScene(scene);
+
+        // macOS native full-screen (NSFullScreenWindow) causes the accessibility
+        // framework to aggressively traverse the scene graph, triggering a
+        // StackOverflow in MacAccessible.getUnignoredChildren that freezes the FX
+        // thread silently. Redirect to maximized window (stays NSWindow) instead.
+        stage.fullScreenProperty().addListener((obs, wasFullScreen, isFullScreen) -> {
+            if (isFullScreen) {
+                Platform.runLater(() -> {
+                    stage.setFullScreen(false);
+                    stage.setMaximized(true);
+                });
+            }
+        });
+
         stage.show();
     }
 

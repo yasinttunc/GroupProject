@@ -12,6 +12,13 @@ public class PasswordUtils {
 
     private PasswordUtils() {}
 
+    /**
+     * Hashes a plaintext password using SHA-256.
+     *
+     * @param password the plaintext password to hash
+     * @return lowercase hex string of the SHA-256 digest
+     * @throws RuntimeException if SHA-256 is not available on this JVM (should never happen)
+     */
     public static String hash(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

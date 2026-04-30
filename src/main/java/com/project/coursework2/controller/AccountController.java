@@ -15,6 +15,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller for the Account page (account-view.fxml).
+ * Shows the logged-in user's profile and lets them edit their details or delete their account.
+ * Fields are read-only by default. The user must verify their password before editing.
+ *
+ * @author Group 2
+ * @version 1.0
+ */
 public class AccountController {
 
     @FXML private TextField firstNameField;
@@ -24,6 +32,10 @@ public class AccountController {
     @FXML private PasswordField passwordField;
     @FXML private Label statusLabel;
 
+    /**
+     * Loads the current user's profile into the form fields.
+     * All fields start as read-only.
+     */
     @FXML
     public void initialize() {
         setFieldsEditable(false);
@@ -37,6 +49,11 @@ public class AccountController {
         idField.setText(user.getUserID() != null ? user.getUserID() : "");
     }
 
+    /**
+     * Enables or disables editing on all profile fields.
+     *
+     * @param editable true to allow editing, false to lock
+     */
     private void setFieldsEditable(boolean editable) {
         firstNameField.setEditable(editable);
         lastNameField.setEditable(editable);
@@ -44,6 +61,9 @@ public class AccountController {
         passwordField.setEditable(editable);
     }
 
+    /**
+     * Asks the user to verify their password, then unlocks the form for editing.
+     */
     @FXML
     private void handleEdit() {
         if (!verifyPassword("Enter your current password to enable editing.")) return;
@@ -51,11 +71,15 @@ public class AccountController {
         setStatus("Fields unlocked. Make your changes and press Save.", false);
     }
 
+    /**
+     * Saves changes to the user's profile.
+     * If the password field is left blank, the stored password is not changed.
+     */
     @FXML
     private void handleSave() {
-        String firstName = firstNameField.getText().trim();
-        String lastName  = lastNameField.getText().trim();
-        String email     = emailField.getText().trim();
+        String firstName  = firstNameField.getText().trim();
+        String lastName   = lastNameField.getText().trim();
+        String email      = emailField.getText().trim();
         String newPassword = passwordField.getText();
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
@@ -87,6 +111,10 @@ public class AccountController {
         }
     }
 
+    /**
+     * Asks for password confirmation, shows a final warning, then permanently deletes the account.
+     * On success the session is cleared and the login page is shown.
+     */
     @FXML
     private void handleDeleteAccount() {
         User user = SessionManager.getCurrentUser();
@@ -112,6 +140,12 @@ public class AccountController {
         }
     }
 
+    /**
+     * Shows a dialog that asks for the user's current password and checks it against the database.
+     *
+     * @param prompt the message to show in the dialog
+     * @return true if the password is correct, false otherwise
+     */
     private boolean verifyPassword(String prompt) {
         PasswordField pwField = new PasswordField();
         pwField.setPromptText("Current password");
@@ -140,8 +174,15 @@ public class AccountController {
         }
     }
 
+    /**
+     * Shows a status message below the form.
+     *
+     * @param message the text to show
+     * @param isError true to show in red (error), false to show in blue (info)
+     */
     private void setStatus(String message, boolean isError) {
         statusLabel.setText(message);
-        statusLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: " + (isError ? "#E8735A" : "#4AADA8") + ";");
+        statusLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: "
+                + (isError ? "#D86969" : "#4F7CFF") + ";");
     }
 }

@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 /**
- * Business logic for creating and cancelling bookings.
+ * Business logic for creating, editing and cancelling bookings.
  * Controllers call this class — they never talk to BookingsDatabaseManager directly.
  */
 public class BookingService {
@@ -64,12 +64,58 @@ public class BookingService {
     }
 
     /**
+     * Validates and updates an existing booking owned by the user.
+     *
+     * @param user the user editing the booking
+     * @param bookingId the booking ID to update
+     * @param resource the new resource
+     * @param date the new date
+     * @param startTime the new start time
+     * @param endTime the new end time
+     * @throws IllegalArgumentException if the edit is not allowed
+     * @throws SQLException if the database has a problem
+     */
+    public static void updateBooking(User user,
+                                     String bookingId,
+                                     ResourcesDatabaseManager.ResourceRow resource,
+                                     String date, String startTime, String endTime)
+            throws IllegalArgumentException, SQLException {
+
+        Booking current = BookingsDatabaseManager.getBookingsByUser(user.getUserID())
+                .stream()
+                .filter(b -> bookingId.equals(b.getBookingID()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("This booking could not be found."));
+
+        BookingStatus status = BookingStatus.from(current.getStatus());
+        if (status == null || !status.isActive())
+            throw new IllegalArgumentException("Only pending or confirmed bookings can be edited.");
+
+        validateBookingFields(user, resource, date, startTime, endTime);
+
+        if (BookingsDatabaseManager.hasMaintenanceConflict(resource.getResourceId(), date, startTime, endTime))
+            throw new IllegalArgumentException("This resource is closed for maintenance at the selected time.");
+
+        if (BookingsDatabaseManager.hasBookingConflictExcluding(bookingId, resource.getResourceId(), date, startTime, endTime))
+            throw new IllegalArgumentException("This resource is already booked at the selected time.");
+
+        BookingsDatabaseManager.updateBookingDetails(bookingId, resource.getResourceId(), date, startTime, endTime);
+    }
+
+    /**
      * Cancels an existing booking.
      */
     public static void cancelBooking(String bookingId) throws SQLException {
         BookingsDatabaseManager.updateBookingStatus(bookingId, BookingStatus.CANCELLED.toString());
     }
 
+    /**
+     * Checks whether a booking should count toward the user's active booking quota.
+     * A booking counts as active if it is pending or confirmed AND has not yet ended.
+     *
+     * @param booking the booking to check
+     * @return true if the booking counts as active, false otherwise
+     */
     public static boolean countsAsActiveBooking(Booking booking) {
         if (!BookingStatus.from(booking.getStatus()).isActive()) return false;
         try {
@@ -82,5 +128,44 @@ public class BookingService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Runs the common validation checks shared by create and update flows.
+     * Throws {@link IllegalArgumentException} with a user-friendly message if any check fails.
+     *
+     * @param user      the user making the booking
+     * @param resource  the resource being booked
+     * @param date      booking date in "YYYY-MM-DD" format
+     * @param startTime start time in "HH:MM" format
+     * @param endTime   end time in "HH:MM" format
+     */
+    private static void validateBookingFields(User user,
+                                             ResourcesDatabaseManager.ResourceRow resource,
+                                             String date, String startTime, String endTime) {
+        if (resource == null)
+            throw new IllegalArgumentException("Please select a resource.");
+
+        LocalDate bookingDate = LocalDate.parse(date);
+        LocalTime start = LocalTime.parse(startTime);
+        LocalTime end = LocalTime.parse(endTime);
+
+        if (bookingDate.isBefore(LocalDate.now()))
+            throw new IllegalArgumentException("Cannot book a date in the past.");
+
+        if (!end.isAfter(start))
+            throw new IllegalArgumentException("End time must be after start time.");
+
+        if (!resource.isActive())
+            throw new IllegalArgumentException("This resource is not available right now.");
+
+        long duration = java.time.Duration.between(start, end).toMinutes();
+        if (duration > resource.getMaxBookingDuration())
+            throw new IllegalArgumentException("This booking is longer than the resource limit.");
+
+        Role userRole = Role.from(user.getRole());
+        Role requiredRole = Role.from(resource.getRequiredRole());
+        if (userRole == null || requiredRole == null || userRole.level() < requiredRole.level())
+            throw new IllegalArgumentException("You do not have the required role to book this resource.");
     }
 }

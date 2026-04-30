@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 /**
@@ -26,7 +28,7 @@ import javafx.scene.layout.VBox;
  * resource type. Cards are built programmatically at runtime rather than
  * being hardcoded in FXML.
  *
- * @author CRBAS Team
+ * @author Group 2
  * @version 1.0
  */
 public class ResourcesController {
@@ -59,16 +61,7 @@ public class ResourcesController {
         }catch (SQLException e){
             System.out.println("Error loading resources: " + e.getMessage());
         }
-        /*try {
-            List<ResourceRow> studyRooms = ResourceService.getByType(ResourceType.STUDY_ROOM);
-            List<ResourceRow> equipment  = ResourceService.getByType(ResourceType.EQUIPMENT);
-            List<ResourceRow> labs       = ResourceService.getByType(ResourceType.LAB);
-            populate(roomsContainer, studyRooms, this::buildStudyRoomCard);
-            populate(equipmentContainer, equipment, this::buildEquipmentCard);
-            populate(labsContainer, labs, this::buildLabCard);
-        } catch (Exception e) {
-            System.out.println("Error loading resources: " + e.getMessage());
-        }*/
+
     }
 
     // Helper method to populate a container with resource cards.
@@ -76,10 +69,11 @@ public class ResourcesController {
         if (resources.isEmpty()) {
             // If there are no resources, display a message.
             VBox empty = new VBox();
-            empty.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;");
+            empty.setStyle("-fx-background-color: white; -fx-padding: 18; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 7, 0, 0, 2);");
+            empty.setPrefWidth(210);
 
             Label label = new Label("No resources available");
-            label.setStyle("-fx-font-weight: bold; -fx-text-fill: #3D3D3D;");
+            label.setStyle("-fx-font-weight: bold; -fx-text-fill: #243044;");
             empty.getChildren().add(label);
 
             container.getChildren().add(empty);
@@ -101,62 +95,63 @@ public class ResourcesController {
     // Methods to build different types of resource cards.
     // While they are currently similar, they can be easily customized in the future if needed.
     private VBox buildStudyRoomCard(ResourceRow resource) {
-        VBox card = new VBox();
-        card.setSpacing(5);
-        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;");
-        card.setPrefWidth(150);
-        
-        Label nameLabel = new Label(resource.getName());
-        nameLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #3D3D3D;");
-
-        Label locationLabel = new Label(resource.getBuilding() + " " + resource.getRoom());
-        locationLabel.setStyle("-fx-text-fill: #7A7A7A; -fx-font-size: 11px;");
-
-        Button bookButton = new Button("Book");
-        bookButton.setStyle("-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
-        enableBookButton(bookButton, resource);
-
-        card.getChildren().addAll(nameLabel, locationLabel, bookButton);
-        return card;
+        return buildCard(resource);
     }
 
     private VBox buildEquipmentCard(ResourceRow resource) {
-        VBox card = new VBox();
-        card.setSpacing(5);
-        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;");
-        card.setPrefWidth(150);
-        
-        Label nameLabel = new Label(resource.getName());
-        nameLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #3D3D3D;");
-
-        Label locationLabel = new Label(resource.getBuilding() + " " + resource.getRoom());
-        locationLabel.setStyle("-fx-text-fill: #7A7A7A; -fx-font-size: 11px;");
-
-        Button bookButton = new Button("Book");
-        bookButton.setStyle("-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
-        enableBookButton(bookButton, resource);
-
-        card.getChildren().addAll(nameLabel, locationLabel, bookButton);
-        return card;
+        return buildCard(resource);
     }
 
     private VBox buildLabCard(ResourceRow resource) {
+        return buildCard(resource);
+    }
+
+    /**
+     * Builds a resource card showing the name, building/room location,
+     * opening hours, and a Book button. All three resource types (study room,
+     * equipment, lab) use the same card layout.
+     *
+     * @param resource the resource to display
+     * @return a styled {@link VBox} card ready to add to a scroll container
+     */
+    private VBox buildCard(ResourceRow resource) {
         VBox card = new VBox();
-        card.setSpacing(5);
-        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;");
-        card.setPrefWidth(150);
-        
+        card.setSpacing(8);
+        card.setStyle("-fx-background-color: white; -fx-padding: 16; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 7, 0, 0, 2);");
+        card.setPrefWidth(210);
+        card.setMinHeight(142);
+
         Label nameLabel = new Label(resource.getName());
-        nameLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #3D3D3D;");
+        nameLabel.setWrapText(true);
+        nameLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #243044; -fx-font-size: 13px;");
 
         Label locationLabel = new Label(resource.getBuilding() + " " + resource.getRoom());
-        locationLabel.setStyle("-fx-text-fill: #7A7A7A; -fx-font-size: 11px;");
+        locationLabel.setStyle("-fx-text-fill: #687385; -fx-font-size: 11px;");
+
+        String hours = resource.getOpeningHours();
+        Label hoursLabel = new Label("Hours: " + (hours != null && !hours.isBlank() ? hours : "Not set"));
+        hoursLabel.setStyle("-fx-text-fill: #4F7CFF; -fx-font-size: 11px;");
+
+        Label statusLabel = new Label(resource.isActive() ? "Available" : "Unavailable");
+        statusLabel.setStyle(resource.isActive()
+                ? "-fx-background-color: #EAF7EF; -fx-text-fill: #3F8F57; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 10;"
+                : "-fx-background-color: #F7EDEE; -fx-text-fill: #B45454; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 10;");
 
         Button bookButton = new Button("Book");
-        bookButton.setStyle("-fx-background-color: #4AADA8; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
-        enableBookButton(bookButton, resource);
+        bookButton.setStyle(resource.isActive()
+                ? "-fx-background-color: #4F7CFF; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-padding: 5 13;"
+                : "-fx-background-color: #DDE3EE; -fx-text-fill: #687385; -fx-background-radius: 8; -fx-padding: 5 13;");
+        bookButton.setDisable(!resource.isActive());
+        if (resource.isActive()) {
+            enableBookButton(bookButton, resource);
+        }
 
-        card.getChildren().addAll(nameLabel, locationLabel, bookButton);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        HBox footer = new HBox(8, statusLabel, spacer, bookButton);
+        footer.setAlignment(Pos.CENTER_LEFT);
+
+        card.getChildren().addAll(nameLabel, locationLabel, hoursLabel, footer);
         return card;
     }
 

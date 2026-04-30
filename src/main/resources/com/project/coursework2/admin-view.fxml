@@ -32,7 +32,7 @@
                 </TableView>
 
                 <!-- Users Edit Form -->
-                <VBox spacing="10" style="-fx-border-color: #E6E9ED transparent transparent transparent; -fx-padding: 15 0 0 0;">
+                <VBox spacing="10" style="-fx-border-color: #DDE3EE transparent transparent transparent; -fx-padding: 15 0 0 0;">
                     <HBox spacing="15">
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
                             <Label text="First Name" styleClass="stat-label"/>
@@ -113,8 +113,10 @@
                         </HBox>
                     </VBox>
                     <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Button text="Save User" styleClass="accept-btn" onAction="#handleSaveUser" fx:id="saveUserBtn"/>
-                        <Button text="Add User" styleClass="accept-btn" onAction="#handleAddUser" fx:id="addUserBtn" style="-fx-background-color: #3498DB;"/>
+                        <Button text="Save User" onAction="#handleSaveUser" fx:id="saveUserBtn"
+                                style="-fx-background-color: #26B99A; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 15; -fx-background-radius: 2; -fx-cursor: hand;"/>
+                        <Button text="Add User" onAction="#handleAddUser" fx:id="addUserBtn"
+                                style="-fx-background-color: #7B61FF; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 15; -fx-background-radius: 2; -fx-cursor: hand;"/>
                         <Button text="Delete" styleClass="refuse-btn" onAction="#handleDeleteUser" fx:id="deleteUserBtn"/>
                     </HBox>
                 </VBox>
@@ -127,7 +129,7 @@
                     <Label text="Total Users" styleClass="stat-label"/>
                 </VBox>
                 <VBox styleClass="stat-badge">
-                    <Label text="Active" styleClass="stat-number" style="-fx-text-fill: #26B99A;"/>
+                    <Label text="Active" styleClass="stat-number" style="-fx-text-fill: #6FB585;"/>
                     <Label text="System Status" styleClass="stat-label"/>
                 </VBox>
             </VBox>
@@ -160,7 +162,7 @@
                 </TableView>
 
                 <!-- Resources Edit Form -->
-                <VBox spacing="10" style="-fx-border-color: #E6E9ED transparent transparent transparent; -fx-padding: 15 0 0 0;">
+                <VBox spacing="10" style="-fx-border-color: #DDE3EE transparent transparent transparent; -fx-padding: 15 0 0 0;">
                     <HBox spacing="15">
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
                             <Label text="Resource Name" styleClass="stat-label"/>
@@ -201,9 +203,17 @@
                             <TextField fx:id="resIdField" styleClass="admin-search" editable="false"/>
                         </VBox>
                     </HBox>
+                    <HBox spacing="15">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Opening Hours" styleClass="stat-label"/>
+                            <TextField fx:id="resOpeningHoursField" styleClass="admin-search" promptText="e.g. 08:00 – 22:00"/>
+                        </VBox>
+                    </HBox>
                     <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Button text="Save Resource" styleClass="accept-btn" onAction="#handleSaveResource" fx:id="saveResourceBtn"/>
-                        <Button text="Add Resource" styleClass="accept-btn" onAction="#handleAddResource" fx:id="addResourceBtn" style="-fx-background-color: #3498DB;"/>
+                        <Button text="Save Resource" onAction="#handleSaveResource" fx:id="saveResourceBtn"
+                                style="-fx-background-color: #26B99A; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 15; -fx-background-radius: 2; -fx-cursor: hand;"/>
+                        <Button text="Add Resource" onAction="#handleAddResource" fx:id="addResourceBtn"
+                                style="-fx-background-color: #7B61FF; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 15; -fx-background-radius: 2; -fx-cursor: hand;"/>
                         <Button text="Delete" styleClass="refuse-btn" onAction="#handleDeleteResource" fx:id="deleteResourceBtn"/>
                     </HBox>
                 </VBox>
@@ -216,12 +226,12 @@
                 </VBox>
                 <Button text="+ Add Maintenance Window" onAction="#handleAddMaintenance"
                         maxWidth="Infinity"
-                        style="-fx-background-color: #E8735A; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px;"/>
+                        style="-fx-background-color: #8A7AE6; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-size: 12px;"/>
 
                 <!-- Upcoming Maintenance Cards -->
-                <VBox spacing="0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E6E9ED; -fx-border-width: 1;">
+                <VBox spacing="0" style="-fx-background-color: #FFFFFF; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-background-radius: 10; -fx-border-radius: 10;">
                     <Label text="UPCOMING MAINTENANCE"
-                           style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #73879C; -fx-padding: 10 12; -fx-border-color: transparent transparent #E6E9ED transparent; -fx-border-width: 0 0 1 0; -fx-max-width: Infinity;"/>
+                           style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #687385; -fx-padding: 10 12; -fx-border-color: transparent transparent #DDE3EE transparent; -fx-border-width: 0 0 1 0; -fx-max-width: Infinity;"/>
                     <VBox fx:id="maintenanceWindowsContainer" spacing="0"/>
                 </VBox>
             </VBox>
@@ -236,7 +246,7 @@
 
             <HBox spacing="20">
                 <VBox styleClass="stat-badge" HBox.hgrow="ALWAYS">
-                    <Label fx:id="pendingCountLabel" text="0" styleClass="stat-number" style="-fx-text-fill: #D9534F;"/>
+                    <Label fx:id="pendingCountLabel" text="0" styleClass="stat-number" style="-fx-text-fill: #D86969;"/>
                     <Label text="Pending Approvals" styleClass="stat-label"/>
                 </VBox>
                 <VBox styleClass="stat-badge" HBox.hgrow="ALWAYS">
@@ -267,7 +277,7 @@
                     </TableView>
 
                     <!-- Bookings Edit Form -->
-                    <VBox spacing="10" style="-fx-border-color: #E6E9ED transparent transparent transparent; -fx-padding: 15 0 0 0;">
+                    <VBox spacing="10" style="-fx-border-color: #DDE3EE transparent transparent transparent; -fx-padding: 15 0 0 0;">
                         <HBox spacing="15">
                             <VBox spacing="5" HBox.hgrow="ALWAYS">
                                 <Label text="Booking ID" styleClass="stat-label"/>

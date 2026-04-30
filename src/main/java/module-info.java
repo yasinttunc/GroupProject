@@ -11,14 +11,11 @@ module com.project.coursework2 {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
-
-    opens com.project.coursework2 to javafx.fxml;
+    opens com.project.coursework2 to javafx.fxml, org.junit.platform.commons;
     opens com.project.coursework2.controller to javafx.fxml;
     opens com.project.coursework2.model to javafx.fxml;
-    opens com.project.coursework2.gui to javafx.fxml;
     exports com.project.coursework2;
     exports com.project.coursework2.controller;
     exports com.project.coursework2.model;
     exports com.project.coursework2.data;
-    exports com.project.coursework2.gui;
 }

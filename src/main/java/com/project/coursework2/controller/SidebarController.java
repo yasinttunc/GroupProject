@@ -31,6 +31,16 @@ public class SidebarController {
     /** Tracks whether the admin submenu is currently expanded. */
     private boolean adminMenuExpanded = false;
 
+    /**
+     * Cached root node of admin-view.fxml.
+     * Created on the first admin navigation and reused on every subsequent tab switch
+     * so that {@code AdminController.initialize()} (with its 4 DB queries) only runs once.
+     */
+    private Node cachedAdminPage = null;
+
+    /** Controller associated with {@link #cachedAdminPage}. Used to call {@code switchTab()} directly. */
+    private AdminController cachedAdminController = null;
+
     @FXML
     public void initialize() {
         instance = this;
@@ -156,8 +166,7 @@ public class SidebarController {
     @FXML
     private void goAdminUsers() {
         setAdminSubActive(adminUsersBtn);
-        SessionManager.setAdminActiveTab("users");
-        loadPage("admin-view.fxml");
+        loadAdminPage("users");
     }
 
     /**
@@ -166,8 +175,7 @@ public class SidebarController {
     @FXML
     private void goAdminResources() {
         setAdminSubActive(adminResourcesBtn);
-        SessionManager.setAdminActiveTab("resources");
-        loadPage("admin-view.fxml");
+        loadAdminPage("resources");
     }
 
     /**
@@ -176,8 +184,34 @@ public class SidebarController {
     @FXML
     private void goAdminBookings() {
         setAdminSubActive(adminBookingsBtn);
-        SessionManager.setAdminActiveTab("bookings");
-        loadPage("admin-view.fxml");
+        loadAdminPage("bookings");
+    }
+
+    /**
+     * Loads the admin page on the first call and caches the result.
+     * On subsequent tab switches it calls {@link AdminController#switchTab(String)} directly
+     * on the cached controller, which only changes pane visibility — it does not re-run
+     * {@code initialize()} and avoids the four synchronous DB queries that would cause a
+     * brief UI freeze on every tab change.
+     *
+     * @param tab the tab to show: "users", "resources", or "bookings"
+     */
+    private void loadAdminPage(String tab) {
+        if (mainContentArea == null) return;
+        SessionManager.setAdminActiveTab(tab);
+        try {
+            if (cachedAdminPage == null) {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/com/project/coursework2/admin-view.fxml"));
+                cachedAdminPage = loader.load();
+                cachedAdminController = loader.getController();
+            } else {
+                cachedAdminController.switchTab(tab);
+            }
+            mainContentArea.getChildren().setAll(cachedAdminPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // ───────────────── Submenu Styling ─────────────────

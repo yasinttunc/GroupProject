@@ -1,0 +1,8 @@
+module:com.project.coursework2
+com.project.coursework2
+com.project.coursework2.controller
+com.project.coursework2.data
+com.project.coursework2.gui
+com.project.coursework2.model
+com.project.coursework2.service
+com.project.coursework2.util

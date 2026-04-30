@@ -14,14 +14,15 @@ import java.time.LocalDate;
  * without passing objects between scenes.
  * Call {@link #clear()} on logout to reset all fields.
  *
- * @author CRBAS Team
+ * @author Group 2
  * @version 1.0
  */
 public class SessionManager {
+
     private static User currentUser;
     private static String userRole;
     private static String userID;
-    private static String adminActiveTab = "users"; // default tab
+    private static String adminActiveTab = "users";
 
     private static Resource currentSelectedResource;
     private static String currentSelectedResourceID;
@@ -29,38 +30,37 @@ public class SessionManager {
     private static String currentSelectedStartTime;
     private static String currentSelectedEndTime;
 
-    public static void setCurrentUser(User user) {
-        currentUser = user;
-    }
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-    public static String getUserRole() {
-        return userRole;
-    }
-    public static void setUserRole(String userRole) {
-        SessionManager.userRole = userRole;
-    }
+    /** @param user the authenticated user to store in the session */
+    public static void setCurrentUser(User user) { currentUser = user; }
 
-    public static Resource getCurrentSelectedResource() {
-        return currentSelectedResource;
-    }
+    /** @return the currently logged-in user, or null if no one is logged in */
+    public static User getCurrentUser() { return currentUser; }
 
-    public static String getAdminActiveTab() {
-        return adminActiveTab;
-    }
+    /** @return the role string of the current user (e.g. "Admin") */
+    public static String getUserRole() { return userRole; }
 
-    public static void setAdminActiveTab(String tab) {
-        adminActiveTab = tab;
-    }
-    public static String getUserID() {
-        return userID;
-    }
-    public static void setUserID(String userID) {
-        SessionManager.userID = userID;
-    }
+    /** @param userRole the role string to store */
+    public static void setUserRole(String userRole) { SessionManager.userRole = userRole; }
 
+    /** @return the currently selected resource, or null if none */
+    public static Resource getCurrentSelectedResource() { return currentSelectedResource; }
 
+    /** @return the admin tab that was last active ("users", "resources", or "bookings") */
+    public static String getAdminActiveTab() { return adminActiveTab; }
+
+    /** @param tab the admin tab to activate ("users", "resources", or "bookings") */
+    public static void setAdminActiveTab(String tab) { adminActiveTab = tab; }
+
+    /** @return the unique ID of the current user */
+    public static String getUserID() { return userID; }
+
+    /** @param userID the user ID to store */
+    public static void setUserID(String userID) { SessionManager.userID = userID; }
+
+    /**
+     * Clears all session data.
+     * Should be called when the user logs out.
+     */
     public static void clear() {
         currentUser = null;
         userRole = null;
@@ -68,7 +68,17 @@ public class SessionManager {
         adminActiveTab = "users";
     }
 
-    public static void saveEditAccountController(String userID, String fName, String lName, String email, String password) {
+    /**
+     * Updates the current user's profile both in the session and in the database.
+     *
+     * @param userID   the user's ID
+     * @param fName    new first name
+     * @param lName    new last name
+     * @param email    new email address
+     * @param password new plaintext password (will be hashed before storage)
+     */
+    public static void saveEditAccountController(String userID, String fName, String lName,
+                                                  String email, String password) {
         if (currentUser == null) return;
         currentUser.setFirstName(fName);
         currentUser.setLastName(lName);

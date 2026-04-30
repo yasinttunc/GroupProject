@@ -18,7 +18,7 @@ import static com.project.coursework2.data.DatabaseConnection.getConnection;
  * full {@link com.project.coursework2.model.Resource} model hierarchy, which simplifies
  * JavaFX table binding and avoids unnecessary joins.
  *
- * @author CRBAS Team
+ * @author Group 2
  * @version 1.0
  */
 public class ResourcesDatabaseManager {
@@ -37,11 +37,24 @@ public class ResourcesDatabaseManager {
         private final String building;
         private final String room;
         private final boolean active;
+        private final String openingHours;
 
-
+        /**
+         * Creates a resource row from database column values.
+         *
+         * @param resourceId         unique resource identifier
+         * @param name               display name
+         * @param type               resource type ("StudyRoom", "Equipment", or "Lab")
+         * @param building           building where the resource is located
+         * @param room               room name or number
+         * @param requiredRole       minimum role needed to book this resource
+         * @param maxBookingDuration maximum booking duration in minutes
+         * @param active             whether the resource is available for booking
+         * @param openingHours       free-text opening hours shown on resource cards (e.g. "08:00 - 18:00")
+         */
         public ResourceRow(String resourceId, String name, String type,
                            String building, String room, String requiredRole,
-                           int maxBookingDuration, boolean active) {
+                           int maxBookingDuration, boolean active, String openingHours) {
             this.resourceId = resourceId;
             this.name = name;
             this.type = type;
@@ -50,34 +63,62 @@ public class ResourcesDatabaseManager {
             this.requiredRole = requiredRole;
             this.maxBookingDuration = maxBookingDuration;
             this.active = active;
+            this.openingHours = openingHours;
         }
 
+        /** @return the unique resource ID (e.g. "RES001") */
         public String getResourceId() { return resourceId; }
+        /** @return the display name of the resource */
         public String getName() { return name; }
+        /** @return the resource type string ("StudyRoom", "Equipment", or "Lab") */
         public String getType() { return type; }
+        /** @return the building where the resource is located */
         public String getBuilding() { return building; }
+        /** @return the room name or number */
         public String getRoom() { return room; }
+        /** @return the minimum role required to book this resource */
         public String getRequiredRole() { return requiredRole; }
+        /** @return the maximum booking duration in minutes */
         public int getMaxBookingDuration() { return maxBookingDuration; }
+        /** @return {@code true} if the resource is currently available for booking */
         public boolean isActive() { return active; }
+        /** @return "Yes" if the resource is active, "No" otherwise — used for table display */
         public String getActiveText() { return active ? "Yes" : "No"; }
+        /** @return the opening hours string (e.g. "08:00 – 22:00"), may be null */
+        public String getOpeningHours() { return openingHours; }
     }
 
     /**
-     * Snapshot of a study room's seat capacity and how many seats are booked today.
+     * Snapshot of a study room's seat capacity and today's booking load.
+     * Used to render the capacity progress bars on the home dashboard.
      */
     public static class CapacityRow {
+        /** Display name of the study room. */
         public final String name;
+        /** Maximum number of seats in the room. */
         public final int capacity;
+        /** Total attendee count across all pending/confirmed bookings today, capped at capacity. */
         public final int seatsBooked;
 
+        /**
+         * Creates a capacity snapshot.
+         *
+         * @param name        display name of the study room
+         * @param capacity    maximum number of seats
+         * @param seatsBooked total attendees booked today (capped at capacity to avoid going over 100%)
+         */
         public CapacityRow(String name, int capacity, int seatsBooked) {
             this.name = name;
             this.capacity = capacity;
             this.seatsBooked = Math.min(seatsBooked, capacity);
         }
 
-        /** Fraction of seats booked today, capped at 1.0. */
+        /**
+         * Returns the fraction of seats booked today as a value between 0.0 and 1.0.
+         * Returns 0.0 if the room has no capacity to avoid division by zero.
+         *
+         * @return occupancy ratio (0.0 = empty, 1.0 = full)
+         */
         public double occupancy() {
             return capacity == 0 ? 0.0 : (double) seatsBooked / capacity;
         }
@@ -114,16 +155,18 @@ public class ResourcesDatabaseManager {
     }
 
     /**
-     * Gathers all resources from the database.
+     * Returns every resource in the database, both active and inactive.
+     * Results are not filtered — callers should filter by {@link ResourceRow#isActive()}
+     * or type themselves, or use {@link com.project.coursework2.service.ResourceService#getByType}.
      *
-     * @return list of ResourceRow objects for table display
-     * @throws SQLException if a database access error occurs
+     * @return list of all {@link ResourceRow} records ordered by insertion order
+     * @throws SQLException on database access error
      */
     public static ArrayList<ResourceRow> getAllResources() throws SQLException {
         ArrayList<ResourceRow> resources = new ArrayList<>();
 
         String query = "SELECT resourceID, name, type, building, room, " +
-                       "requiredRole, maxBookingDuration, isActive FROM Resource";
+                       "requiredRole, maxBookingDuration, isActive, openingHours FROM Resource";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -138,7 +181,8 @@ public class ResourcesDatabaseManager {
                         rs.getString("room"),
                         rs.getString("requiredRole"),
                         rs.getInt("maxBookingDuration"),
-                        rs.getInt("isActive") == 1
+                        rs.getInt("isActive") == 1,
+                        rs.getString("openingHours")
                 );
                 resources.add(row);
             }

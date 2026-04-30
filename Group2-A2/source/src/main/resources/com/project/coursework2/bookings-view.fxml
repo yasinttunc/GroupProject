@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.project.coursework2.controller.BookingsController"
+           stylesheets="@styles.css"
+           styleClass="admin-container">
+
+    <VBox spacing="20">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="MY BOOKINGS" styleClass="admin-page-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="searchField" promptText="Search bookings..." styleClass="admin-search" prefWidth="250"/>
+        </HBox>
+
+        <!-- New Booking Form Card -->
+        <VBox spacing="15" styleClass="admin-card">
+            <Label text="New Booking Request" styleClass="section-title"/>
+            <HBox spacing="25" alignment="CENTER_LEFT">
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <Label text="Resource" styleClass="stat-label"/>
+                    <ComboBox fx:id="resourceDropdown" promptText="Select Resource" maxWidth="Infinity" styleClass="admin-search"/>
+                </VBox>
+                <VBox spacing="8" HBox.hgrow="SOMETIMES">
+                    <Label text="Date" styleClass="stat-label"/>
+                    <DatePicker fx:id="startDatePicker" prefWidth="180" styleClass="admin-search"/>
+                </VBox>
+                <VBox spacing="8" HBox.hgrow="SOMETIMES">
+                    <Label text="Start Time" styleClass="stat-label"/>
+                    <ComboBox fx:id="startTimeCombo" promptText="Start" prefWidth="110" styleClass="admin-search"/>
+                </VBox>
+                <VBox spacing="8" HBox.hgrow="SOMETIMES">
+                    <Label text="End Time" styleClass="stat-label"/>
+                    <ComboBox fx:id="endTimeCombo" promptText="End" prefWidth="110" styleClass="admin-search"/>
+                </VBox>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 10 0 0 0;">
+                <Button text="Submit Request" onAction="#handleSubmitBooking"
+                        style="-fx-background-color: #4F7CFF; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand; -fx-background-radius: 8;"/>
+            </HBox>
+        </VBox>
+
+        <!-- Bookings Data Card -->
+        <VBox styleClass="admin-card" spacing="15" VBox.vgrow="ALWAYS">
+            <Label text="Bookings List" styleClass="section-title"/>
+            
+            <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="bookingIDCol" text="Booking ID" prefWidth="100"/>
+                    <TableColumn fx:id="resourceNameCol" text="Resource" prefWidth="200"/>
+                    <TableColumn fx:id="dateCol" text="Date" prefWidth="120"/>
+                    <TableColumn fx:id="timeRangeCol" text="Time" prefWidth="150"/>
+                    <TableColumn fx:id="statusCol" text="Status" prefWidth="150"/>
+                    <TableColumn fx:id="actionCol" text="Action" prefWidth="100"/>
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 10 0 0 0; -fx-border-color: #DDE3EE transparent transparent transparent; -fx-border-width: 1 0 0 0;">
+                <Label text="Active bookings:" styleClass="stat-label"/>
+                <Label fx:id="activeBookingsLabel" text="0 / 5" styleClass="stat-number" style="-fx-font-size: 20px;"/>
+                <ProgressBar fx:id="activeBookingsProgress" progress="0.0" prefWidth="100" style="-fx-accent: #6FB585;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>

@@ -7,40 +7,44 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.project.coursework2.controller.HomeController"
             fitToWidth="true"
-            style="-fx-background-color: #FDF6EC;">
+            style="-fx-background-color: #F5F7FB;">
 
-    <VBox spacing="20" style="-fx-background-color: #FDF6EC; -fx-padding: 30;">
+    <VBox spacing="20" style="-fx-background-color: #F5F7FB; -fx-padding: 30;">
 
         <Label text="HOME DASHBOARD"
-               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #243044;"/>
 
         <!-- Welcome Banner -->
         <HBox alignment="CENTER_LEFT" spacing="10"
-              style="-fx-background-color: #4AADA8; -fx-padding: 15 20; -fx-background-radius: 10;">
+              style="-fx-background-color: #4F7CFF; -fx-padding: 15 20; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #3F66D9; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.10), 8, 0, 0, 2);">
             <Label fx:id="welcomeLabel" text="Welcome back!"
                    style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: white;" HBox.hgrow="ALWAYS"/>
             <Label fx:id="welcomeRoleLabel" text=""
-                   style="-fx-font-size: 12px; -fx-text-fill: #D0EFED; -fx-background-color: rgba(0,0,0,0.15); -fx-padding: 3 10; -fx-background-radius: 12;"/>
+                   style="-fx-font-size: 12px; -fx-text-fill: #EAF0FF; -fx-background-color: rgba(0,0,0,0.15); -fx-padding: 3 10; -fx-background-radius: 12;"/>
         </HBox>
 
         <!-- Stats Row -->
         <HBox spacing="15">
-            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
-                <Label text="ACTIVE" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <Label fx:id="activeCount" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #4AADA8;"/>
-                <ProgressBar fx:id="activeProgress" progress="0" prefWidth="120" style="-fx-accent: #4AADA8;"/>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 7, 0, 0, 2);" prefWidth="150">
+                <Label text="ACTIVE" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
+                <Label fx:id="activeCount" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #6FB585;"/>
+                <ProgressBar fx:id="activeProgress" progress="0" prefWidth="120" style="-fx-accent: #6FB585;"/>
             </VBox>
-            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
-                <Label text="PENDING" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <Label fx:id="pendingCount" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #E8735A;"/>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 7, 0, 0, 2);" prefWidth="150">
+                <Label text="PENDING" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
+                <Label fx:id="pendingCount" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #D86969;"/>
             </VBox>
-            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
-                <Label text="RESOURCES" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <Label fx:id="resourcesCount" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #9B59B6;"/>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 7, 0, 0, 2);" prefWidth="150">
+                <Label text="RESOURCES" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
+                <Label fx:id="resourcesCount" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #7B61FF;"/>
             </VBox>
-            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;" prefWidth="150">
-                <Label text="HOURS THIS MONTH" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                <Label fx:id="hoursUsed" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+            <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 7, 0, 0, 2);" prefWidth="150">
+                <Label text="HOURS THIS MONTH" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
+                <Label fx:id="hoursUsed" text="—" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #243044;"/>
+            </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #C9D8FF; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 7, 0, 0, 2);" prefWidth="520">
+                <Label text="MAINTENANCE ALERTS" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
+                <HBox fx:id="maintenanceContainer" spacing="8"/>
             </VBox>
         </HBox>
 
@@ -50,10 +54,10 @@
             <VBox spacing="20" HBox.hgrow="ALWAYS">
 
                 <!-- Live Availability -->
-                <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 8, 0, 0, 2);">
                     <HBox alignment="CENTER_LEFT" spacing="14">
                         <Label text="Live availability — Study rooms"
-                               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #243044;"/>
                         <ToggleButton fx:id="btnRoomA" text="Study Room A" selected="true"
                                       style="-fx-background-radius: 8; -fx-padding: 6 14; -fx-background-color: #EEF0F2; -fx-text-fill: #333;"/>
                         <ToggleButton fx:id="btnRoomB" text="Study Room B"
@@ -62,28 +66,28 @@
                                       style="-fx-background-radius: 8; -fx-padding: 6 14; -fx-background-color: #EEF0F2; -fx-text-fill: #333;"/>
                         <Pane HBox.hgrow="ALWAYS"/>
                         <HBox spacing="8" alignment="CENTER_LEFT">
-                            <Label text="■" style="-fx-text-fill: #4AADA8;"/>
-                            <Label text="Free" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                            <Label text="■" style="-fx-text-fill: #E8735A;"/>
-                            <Label text="Booked" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="■" style="-fx-text-fill: #6FB585;"/>
+                            <Label text="Free" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
+                            <Label text="■" style="-fx-text-fill: #D86969;"/>
+                            <Label text="Booked" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
                             <Label text="■" style="-fx-text-fill: #6BB5FF;"/>
-                            <Label text="Yours" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
-                            <Label text="■" style="-fx-text-fill: #F5C842;"/>
-                            <Label text="Closed" style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                            <Label text="Yours" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
+                            <Label text="■" style="-fx-text-fill: #8A7AE6;"/>
+                            <Label text="Closed" style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
                         </HBox>
                     </HBox>
                     <HBox fx:id="availabilityHourHeader" spacing="6"/>
                     <GridPane fx:id="availabilityGrid" hgap="6" vgap="6"/>
                     <Label fx:id="availabilityHint" text="Select a free slot to navigate to the booking form"
-                           style="-fx-font-size: 11px; -fx-text-fill: #7A7A7A;"/>
+                           style="-fx-font-size: 11px; -fx-text-fill: #687385;"/>
                 </VBox>
 
                 <!-- Recent Booking History -->
-                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 8, 0, 0, 2);">
                     <Label text="Recent booking history"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #243044;"/>
                     <VBox fx:id="recentHistoryContainer" spacing="8">
-                        <Label text="Loading..." style="-fx-font-size: 12px; -fx-text-fill: #7A7A7A;"/>
+                        <Label text="Loading..." style="-fx-font-size: 12px; -fx-text-fill: #687385;"/>
                     </VBox>
                 </VBox>
 
@@ -93,33 +97,25 @@
             <VBox spacing="20" prefWidth="280">
 
                 <!-- Next Up -->
-                <VBox fx:id="nextUpCard" spacing="8" style="-fx-background-color: #E8F5F4; -fx-padding: 20; -fx-background-radius: 10;">
-                    <Label text="Next up" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-                    <Label text="No upcoming bookings" style="-fx-font-size: 14px; -fx-text-fill: #7A7A7A;"/>
+                <VBox fx:id="nextUpCard" spacing="8" style="-fx-background-color: #EAF0FF; -fx-padding: 20; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #C9D8FF; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 8, 0, 0, 2);">
+                    <Label text="Next up" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #243044;"/>
+                    <Label text="No upcoming bookings" style="-fx-font-size: 14px; -fx-text-fill: #687385;"/>
                 </VBox>
 
                 <!-- Upcoming This Week -->
-                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
-                    <Label text="Upcoming this week" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 8, 0, 0, 2);">
+                    <Label text="Upcoming this week" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #243044;"/>
                     <VBox fx:id="upcomingContainer" spacing="8">
-                        <Label text="Loading..." style="-fx-font-size: 12px; -fx-text-fill: #7A7A7A;"/>
+                        <Label text="Loading..." style="-fx-font-size: 12px; -fx-text-fill: #687385;"/>
                     </VBox>
                 </VBox>
 
                 <!-- Study Room Capacity -->
-                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #DDE3EE; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(36,48,68,0.07), 8, 0, 0, 2);">
                     <Label text="Study room capacity today"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #243044;"/>
                     <VBox fx:id="capacityContainer" spacing="10">
-                        <Label text="Loading..." style="-fx-font-size: 12px; -fx-text-fill: #7A7A7A;"/>
-                    </VBox>
-                </VBox>
-
-                <!-- Maintenance Alerts -->
-                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
-                    <Label text="Maintenance alerts" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;"/>
-                    <VBox fx:id="maintenanceContainer" spacing="8">
-                        <Label text="Loading..." style="-fx-font-size: 12px; -fx-text-fill: #7A7A7A;"/>
+                        <Label text="Loading..." style="-fx-font-size: 12px; -fx-text-fill: #687385;"/>
                     </VBox>
                 </VBox>
 

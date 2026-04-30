@@ -1,0 +1,11 @@
+Place the 5-10 minute screen recording in this folder before submission.
+
+The video should show:
+- login,
+- creating a booking,
+- cancelling a booking,
+- live availability changing,
+- conflict detection,
+- resource booking from the Resources page,
+- admin user/resource/booking actions,
+- adding a maintenance window.

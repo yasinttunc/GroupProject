@@ -45,7 +45,7 @@ import static com.project.coursework2.data.DatabaseConnection.getConnection;
  * upcoming booking, upcoming-this-week list, recent booking history, study room
  * capacity bars, and maintenance alerts.
  *
- * @author CRBAS Team
+ * @author Group 2
  * @version 1.0
  */
 public class HomeController {
@@ -74,7 +74,7 @@ public class HomeController {
     @FXML private VBox nextUpCard;
     @FXML private VBox upcomingContainer;
     @FXML private VBox capacityContainer;
-    @FXML private VBox maintenanceContainer;
+    @FXML private HBox maintenanceContainer;
 
     private static final int AVAILABILITY_DAY_COUNT = 4;
     private static final int AVAILABILITY_START_HOUR = 8;
@@ -230,7 +230,7 @@ public class HomeController {
 
         for (int h = AVAILABILITY_START_HOUR; h < AVAILABILITY_END_HOUR; h++) {
             Label lbl = new Label(String.format("%02d", h));
-            lbl.setStyle("-fx-font-size: 11px; -fx-text-fill: #7A7A7A;");
+            lbl.setStyle("-fx-font-size: 11px; -fx-text-fill: #687385;");
             lbl.setPrefWidth(34);
             lbl.setAlignment(Pos.CENTER);
             availabilityHourHeader.getChildren().add(lbl);
@@ -348,7 +348,7 @@ public class HomeController {
         for (int dayIndex = 0; dayIndex < gridData.size(); dayIndex++) {
             LocalDate day = today.plusDays(dayIndex);
             Label dayLabel = new Label(day.format(AVAILABILITY_DAY_FMT));
-            dayLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #7A7A7A; -fx-alignment: CENTER;");
+            dayLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #687385; -fx-alignment: CENTER;");
             dayLabel.setPrefWidth(50);
             availabilityGrid.add(dayLabel, 0, dayIndex);
 
@@ -376,7 +376,7 @@ public class HomeController {
         Tooltip.install(cell, new Tooltip(timeStr + " | " + slot.status()));
 
         if (slot.status() == com.project.coursework2.model.SlotStatus.FREE) {
-            rect.setStroke(Color.web("#4AADA8"));
+            rect.setStroke(Color.web("#6FB585"));
             rect.setStrokeWidth(1);
             cell.setStyle("-fx-cursor: hand;");
             cell.setOnMouseClicked(e -> handleRebook());
@@ -419,13 +419,13 @@ public class HomeController {
                 HBox row = new HBox(10);
                 row.setAlignment(Pos.CENTER_LEFT);
                 row.setPadding(new Insets(6, 8, 6, 8));
-                row.setStyle("-fx-background-color: #F8F8F8; -fx-background-radius: 6;");
+                row.setStyle("-fx-background-color: #F8FAFE; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #DDE3EE; -fx-border-width: 1;");
 
                 VBox info = new VBox(2);
                 Label name = new Label(b.getResourceName() != null ? b.getResourceName() : "Unknown resource");
-                name.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;");
+                name.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #243044;");
                 Label when = new Label(b.getDate() + "  " + b.getStartTime() + " – " + b.getEndTime());
-                when.setStyle("-fx-font-size: 11px; -fx-text-fill: #7A7A7A;");
+                when.setStyle("-fx-font-size: 11px; -fx-text-fill: #687385;");
                 info.getChildren().addAll(name, when);
 
                 Region spacer = new Region();
@@ -465,11 +465,11 @@ public class HomeController {
 
                 HBox header = new HBox();
                 Label nameLabel = new Label(cr.name);
-                nameLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;");
+                nameLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #243044;");
                 Region spacer = new Region();
                 HBox.setHgrow(spacer, Priority.ALWAYS);
                 Label seats = new Label(cr.seatsBooked + " / " + cr.capacity + " seats");
-                seats.setStyle("-fx-font-size: 11px; -fx-text-fill: #7A7A7A;");
+                seats.setStyle("-fx-font-size: 11px; -fx-text-fill: #687385;");
                 header.getChildren().addAll(nameLabel, spacer, seats);
 
                 ProgressBar bar = new ProgressBar(cr.occupancy());
@@ -568,13 +568,13 @@ public class HomeController {
                     HBox row = new HBox(10);
                     row.setAlignment(Pos.CENTER_LEFT);
                     row.setPadding(new Insets(6, 8, 6, 8));
-                    row.setStyle("-fx-background-color: #F8F8F8; -fx-background-radius: 6;");
+                    row.setStyle("-fx-background-color: #F8FAFE; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #DDE3EE; -fx-border-width: 1;");
 
                     VBox info = new VBox(2);
                     Label name = new Label(rs.getString("name"));
-                    name.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #3D3D3D;");
+                    name.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #243044;");
                     Label when = new Label(rs.getString("date") + "  " + rs.getString("startTime") + " – " + rs.getString("endTime"));
-                    when.setStyle("-fx-font-size: 11px; -fx-text-fill: #7A7A7A;");
+                    when.setStyle("-fx-font-size: 11px; -fx-text-fill: #687385;");
                     info.getChildren().addAll(name, when);
 
                     Region spacer = new Region();
@@ -603,28 +603,57 @@ public class HomeController {
         maintenanceContainer.getChildren().clear();
         String query = "SELECT r.name, m.startDate, m.startTime, m.endDate, m.endTime, m.reason " +
                 "FROM MaintenanceWindow m JOIN Resource r ON m.resourceID = r.resourceID " +
-                "WHERE datetime(m.startDate || ' ' || m.startTime) >= datetime('now') " +
-                "ORDER BY m.startDate ASC, m.startTime ASC LIMIT 5";
+                "WHERE datetime(m.endDate || ' ' || m.endTime) >= datetime('now') " +
+                "ORDER BY m.startDate ASC, m.startTime ASC LIMIT 10";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
-            boolean found = false;
+
+            java.util.List<VBox> cards = new java.util.ArrayList<>();
             while (rs.next()) {
-                found = true;
+                VBox card = new VBox(4);
+                card.setPrefWidth(220);
+                card.setStyle("-fx-background-color: #EEF4FF; -fx-background-radius: 8; " +
+                        "-fx-border-radius: 8; -fx-border-color: #C9D8FF; " +
+                        "-fx-border-width: 1; -fx-padding: 8 10;");
+
+                Label nameLabel = new Label(rs.getString("name"));
+                nameLabel.setStyle("-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #243044;");
+                nameLabel.setWrapText(true);
+
+                Label timeLabel = new Label(rs.getString("startDate") + "  " + rs.getString("startTime")
+                        + "  →  " + rs.getString("endDate") + "  " + rs.getString("endTime"));
+                timeLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #687385;");
+                timeLabel.setWrapText(true);
+
+                card.getChildren().addAll(nameLabel, timeLabel);
+
                 String reason = rs.getString("reason");
-                String text = rs.getString("name") + " — "
-                        + rs.getString("startDate") + " " + rs.getString("startTime")
-                        + " to " + rs.getString("endDate") + " " + rs.getString("endTime")
-                        + (reason != null && !reason.isBlank() ? " (" + reason + ")" : "");
-                Label alert = new Label(text);
-                alert.setWrapText(true);
-                alert.setStyle("-fx-font-size: 11px; -fx-text-fill: #C62828;");
-                maintenanceContainer.getChildren().add(alert);
+                if (reason != null && !reason.isBlank()) {
+                    Label reasonLabel = new Label(reason);
+                    reasonLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #8A7AE6; -fx-font-style: italic;");
+                    reasonLabel.setWrapText(true);
+                    card.getChildren().add(reasonLabel);
+                }
+                cards.add(card);
             }
-            if (!found) {
+
+            if (cards.isEmpty()) {
                 maintenanceContainer.getChildren().add(emptyLabel("No maintenance scheduled"));
+                return;
             }
+
+            // Group into columns of 2 — fills down first, then moves to next column
+            for (int i = 0; i < cards.size(); i += 2) {
+                VBox column = new VBox(8);
+                column.getChildren().add(cards.get(i));
+                if (i + 1 < cards.size()) {
+                    column.getChildren().add(cards.get(i + 1));
+                }
+                maintenanceContainer.getChildren().add(column);
+            }
+
         } catch (Exception e) {
             maintenanceContainer.getChildren().add(emptyLabel("Could not load maintenance alerts"));
         }
@@ -660,7 +689,7 @@ public class HomeController {
 
     private Label emptyLabel(String text) {
         Label lbl = new Label(text);
-        lbl.setStyle("-fx-font-size: 12px; -fx-text-fill: #7A7A7A;");
+        lbl.setStyle("-fx-font-size: 12px; -fx-text-fill: #687385;");
         return lbl;
     }
 
@@ -668,7 +697,7 @@ public class HomeController {
         if (status == null) return "-fx-background-color: #E0E0E0; -fx-text-fill: #555;";
         return switch (status.toLowerCase()) {
             case "confirmed"  -> "-fx-background-color: #E8F5E9; -fx-text-fill: #2E7D32;";
-            case "pending"    -> "-fx-background-color: #FFF8E1; -fx-text-fill: #F57F17;";
+            case "pending"    -> "-fx-background-color: #EEF4FF; -fx-text-fill: #4F7CFF;";
             case "cancelled"  -> "-fx-background-color: #FFEBEE; -fx-text-fill: #C62828;";
             case "completed"  -> "-fx-background-color: #E3F2FD; -fx-text-fill: #1565C0;";
             default           -> "-fx-background-color: #E0E0E0; -fx-text-fill: #555;";
@@ -676,9 +705,9 @@ public class HomeController {
     }
 
     private String capacityBarStyle(double occupancy) {
-        String colour = occupancy >= 1.0 ? "#E8735A"   // full → red-orange
-                      : occupancy >= 0.7 ? "#F5C842"   // busy → amber
-                      :                    "#4AADA8";  // free → teal
+        String colour = occupancy >= 1.0 ? "#D86969"
+                      : occupancy >= 0.7 ? "#8A7AE6"
+                      :                    "#6FB585";
         return "-fx-accent: " + colour + ";";
     }
 }
